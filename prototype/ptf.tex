@@ -1,0 +1,1466 @@
+\documentclass[hyperref={pdfpagelabels=false}]{beamer}
+
+\def\pgfsysdriver{pgfsys-dvipdfmx.def}
+
+\usepackage{multirow}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{tabulary}
+\usepackage{amssymb}
+\usepackage{pgf}
+\usepackage{clrscode3e}
+\usepackage{tikz}
+\usepackage{xspace}
+\usepackage{xmpmulti}
+\usepackage{array}
+\usepackage[absolute,overlay]{textpos}
+\usepackage{forloop}
+
+\usetikzlibrary{shapes,arrows,decorations.pathmorphing,backgrounds,positioning,fit}
+\usepgfmodule{plot}
+
+\setbeamercovered{transparent}
+
+\usecolortheme{rose}
+
+\setbeamerfont{frametitle}{series=\bfseries}
+\setbeamercolor*{title}{fg=white}
+\setbeamercolor*{author}{fg=white}
+\setbeamercolor*{institute}{fg=white}
+\setbeamercolor*{date}{fg=white}
+\setbeamerfont{title}{series=\bfseries,size=\huge}
+\setbeamerfont{author}{series=\bfseries}
+
+\setbeamercolor{postit}{fg=black,bg=example text.fg!75!black!10!bg}
+
+\useinnertheme{default}
+\setbeamertemplate{navigation symbols}{}
+
+\title{Paths, Trees, and Flowers}
+\author{Jack Edmonds}
+\institute{ETH Zurich -- Distributed Computing Group -- www.disco.ethz.ch}
+
+\begin{document}
+
+%---------------------slide--------------------%
+{
+\usebackgroundtemplate{\includegraphics[width=\paperwidth]{figures/bg}}
+\begin{frame}
+	\begin{textblock*}{\paperwidth}[0,0](0cm,1cm)
+		\begin{center}
+			\usebeamercolor[fg]{title}
+			\textbf{\huge \inserttitle}
+		\end{center}
+		\usebeamercolor[fg]{normal text}
+	\end{textblock*}
+	\begin{textblock*}{\paperwidth}[0,0](-0.5cm,7.4cm)
+		\flushright
+		\color{white}
+		\itshape \insertauthor
+		\usebeamercolor[fg]{normal text}
+	\end{textblock*}
+	\begin{textblock*}{\paperwidth}[0,1](0.2cm,9.4cm)
+		\flushleft
+ 		\usebeamercolor[fg]{institute}
+		\tiny \itshape \insertinstitute
+		\usebeamercolor[fg]{normal text}
+	\end{textblock*}
+\end{frame}
+}
+
+%---------------------slide--------------------%
+\frame{\tableofcontents}
+
+%---------------------slide--------------------%
+\section{Introduction and background}
+\frame
+{
+	\frametitle{Matching}
+	
+	\begin{description}
+		\item[Matching in a graph] is a set of edges, no two of which meet at a common vertex.
+		\item[Maximum matching] is a matching of maximum cardinality.
+	\end{description}
+	\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{figures/matching.png}
+	\end{figure}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Alternating Path}
+	\begin{description}
+		\item[Exposed(free) vertex] is a vertex that is not incident with any edge in $M$
+		\item[Alternating path] is a path whose edges are alternately in $M$ and $\overline{M}$
+		\item[Augmenting path] is a simple alternating path between exposed vertices
+		\item[Symmetric difference] of two sets $D$ and $E$ is defined as $D \oplus E = (D - E) \cup (E - D)$
+	\end{description}
+}
+
+\frame
+{
+	\frametitle{Alternating Path}
+	\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
+			\tikzstyle{OUT}		= [fill = white]
+			\tikzstyle{IN}		= [fill = black]
+			\tikzstyle{Exposed}	= [dashed, OUT]
+			\tikzstyle{MC}		= [very thick, black]
+			\tikzstyle{NM}		= [gray]
+			
+			
+			\draw (2,0) -- (3,0) -- (3,1) -- (2,1) -- cycle [line width=10pt, green, opacity=0.3];
+			\draw (1,1) -- (2,2) -- (2,3) -- (3,3) [line width=10pt, blue, opacity=0.3];
+			\draw (1,0) -- (0,0) -- (0,1) -- (0,2) -- (0,3) -- (1,3) [line width=10pt, red, opacity=0.3];
+			
+			\draw (1.5, 3.5) node {$M_1$};
+			\foreach \x/\y in {0/0, 2/0, 3/0, 0/1, 1/1, 2/1, 3/1, 0/2, 2/2, 0/3, 2/3, 3/3}
+				\node (v\x\y) at (\x, \y) [Vertex] {};
+			\foreach \x/\y in {1/0, 1/2, 3/2, 1/3}
+				\node (v\x\y) at (\x, \y) [Vertex][Exposed] {};
+			\foreach \a/\b/\c/\d in {0/0/1/0, 0/2/1/2, 2/0/3/0, 2/1/3/1, 2/2/3/2, 2/2/2/3, 2/0/2/1, 3/0/3/1, 0/1/0/2, 1/1/2/2, 0/3/1/3, 2/3/3/3, 1/3/2/3, 3/1/3/2, 0/0/0/1, 0/2/0/3}
+				\draw [-] (v\a\b) to (v\c\d) [NM];
+			\foreach \a/\b/\c/\d in {2/0/2/1, 3/0/3/1, 0/0/0/1, 1/1/2/2, 0/2/0/3, 2/3/3/3}
+				\draw [-] (v\a\b) to (v\c\d) [MC][black];
+			
+			\node at (4.5, 3) [Vertex][Exposed][label=right:exposed vertex] {};
+			\draw (4,2) -- (5,2) [line width=10pt, green, opacity=0.3] node [right, black, opacity=1]{circuit};
+			\draw (4,1) -- (5,1) [line width=10pt, blue, opacity=0.3] node [right, black, opacity=1]{alternating path};
+			\draw (4,0) -- (5,0) [line width=10pt, red, opacity=0.3] node [right, black, opacity=1]{augmenting path};
+		\end{tikzpicture}
+	\end{center}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Alternating Path}
+	
+	\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{figures/symmetric_diff.png}
+	\end{figure}
+}
+
+\frame
+{
+	\frametitle{Alternating Path}
+	
+	\begin{beamercolorbox}[sep=1em,wd=11cm]{postit}
+		For any two matchings $M_{1}$ and $M_{2}$ in graph $G$, the components of the graph formed by $M_{1} \oplus M_{2}$ are paths and circuits which are alternating for $M_{1}$ and $M_{2}$. Each path end-point is exposed for either $M_{1}$ or $M_{2}$.
+	\end{beamercolorbox}
+	\bigskip
+	\begin{beamercolorbox}[sep=1em,wd=11cm]{postit}
+		$A$ is an augmenting path in $(G, M)$ . $M \oplus A$ is a matching of $G$ larger than $M$ by one.
+	\end{beamercolorbox}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Alternating Path}
+	
+	\begin{block}{Theorem - Berge(1957)}
+		$M$ is not a maximum matching if and only if there exists an augmenting path with respect to $M$
+	\end{block}	
+	
+	\begin{itemize}
+	{
+		\item Proof:
+		if $M_{2}$ is a larger matching than $M$, some component of graph $M \oplus M_{2}$ must contain more $M_{2}$ edges than $M$, such a component is an augmenting path for $(G, M)$.
+	}
+	\end{itemize}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Alternating Path}
+	
+	\noindent An alternating path between two matched vertices\\
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=2mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=2mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, red]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v0) at (0,0) [Vertex] {};
+		\node (v1) at (1,0) [Vertex] {};
+		\node (v2) at (2,0) [Vertex] {};
+		\node (v3) at (3,0) [Vertex] {};
+		\node (v4) at (4,0) [Vertex] {};
+		\node (v5) at (5,0) [Vertex] {};
+		
+		\draw [-] (v0) to (v1) [MC];
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
+	\end{tikzpicture}
+	\end{center}
+
+	\noindent An alternating path between two exposed vertices\\
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=2mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=2mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, red]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v0) at (0,0) [Vertex][Exposed] {};
+		\node (v1) at (1,0) [Vertex] {};
+		\node (v2) at (2,0) [Vertex] {};
+		\node (v3) at (3,0) [Vertex] {};
+		\node (v4) at (4,0) [Vertex] {};
+		\node (v5) at (5,0) [Vertex] {};
+		\node (v6) at (6,0) [Vertex] {};
+		\node (v7) at (7,0) [Vertex][Exposed] {};
+		
+		\draw [-] (v0) to (v1) [NM];
+		\draw [-] (v1) to (v2) [MC];
+		\draw [-] (v2) to (v3) [NM];
+		\draw [-] (v3) to (v4) [MC];
+		\draw [-] (v4) to (v5) [NM];
+		\draw [-] (v5) to (v6) [MC];
+		\draw [-] (v6) to (v7) [NM];
+	\end{tikzpicture}
+	\end{center}
+
+
+	\noindent An alternating path between a matched vertex and an exposed vertex\\
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=2mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=2mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, red]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v0) at (0,0) [Vertex][Exposed] {};
+		\node (v1) at (1,0) [Vertex] {};
+		\node (v2) at (2,0) [Vertex] {};
+		\node (v3) at (3,0) [Vertex] {};
+		\node (v4) at (4,0) [Vertex] {};
+		
+		\draw [-] (v0) to (v1) [NM];
+		\draw [-] (v1) to (v2) [MC];
+		\draw [-] (v2) to (v3) [NM];
+		\draw [-] (v3) to (v4) [MC];
+	\end{tikzpicture}
+	\end{center}
+
+	\noindent An alternating cycle\\
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=2mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=2mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, red]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v0) at (0,0) [Vertex] {};
+		\node (v1) at (1,0) [Vertex] {};
+		\node (v2) at (1,1) [Vertex] {};
+		\node (v3) at (0,1) [Vertex] {};
+		
+		\draw [-] (v0) to (v1) [NM];
+		\draw [-] (v1) to (v2) [MC];
+		\draw [-] (v2) to (v3) [NM];
+		\draw [-] (v3) to (v0) [MC];
+	\end{tikzpicture}
+	\end{center}
+
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Bipartite Matching}
+	Left circles represent boys, right diamonds represent girls, and edges are their preferences. We want to make maximum number of couples.
+	\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Vertex} 	= [draw, solid,  fill=white, minimum size=6mm, inner sep=0pt]
+			\tikzstyle{Exposed}	= []
+			\tikzstyle{Boy}		= [circle]
+			\tikzstyle{Girl}		= [diamond, minimum size=7mm]
+			\tikzstyle{MC}		= [black]
+			\tikzstyle{NM}		= [black]
+			
+			\node (b1) at (0,6) [Vertex][Boy][Exposed] {$1$};
+			\node (b2) at (0,5) [Vertex][Boy][Exposed] {$2$};
+			\node (b3) at (0,4) [Vertex][Boy] {$3$};
+			\node (b4) at (0,3) [Vertex][Boy] {$4$};
+			\node (b5) at (0,2) [Vertex][Boy][Exposed] {$5$};
+			\node (b6) at (0,1) [Vertex][Boy] {$6$};
+			
+			\node (ga) at (4,6.00) [Vertex][Girl][Exposed] {$A$};
+			\node (gb) at (4,4.75) [Vertex][Girl][Exposed] {$B$};
+			\node (gc) at (4,3.50) [Vertex][Girl] {$C$};
+			\node (gd) at (4,2.25) [Vertex][Girl] {$D$};
+			\node (ge) at (4,1.00) [Vertex][Girl] {$E$};
+			
+			\draw [-] (b1) to (gc) [NM];
+			\draw [-] (b2) to (gd) [NM];
+			\draw [-] (b3) to (gc) [NM];
+			\draw [-] (b3) to (gd) [MC];
+			\draw [-] (b4) to (ga) [NM];
+			\draw [-] (b4) to (gb) [NM];
+			\draw [-] (b4) to (gd) [NM];
+			\draw [-] (b4) to (ge) [MC];
+			\draw [-] (b5) to (gc) [NM];
+			\draw [-] (b5) to (gd) [NM];
+			\draw [-] (b6) to (ga) [NM];
+			\draw [-] (b6) to (gb) [NM];
+			\draw [-] (b6) to (gc) [MC];
+			\draw [-] (b6) to (gd) [NM];
+			\draw [-] (b6) to (ge) [NM];
+		\end{tikzpicture}
+	\end{center}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Find An Augmenting Path Using BFS}
+
+	\begin{center}
+	\begin{figure}[h]
+	\hfill
+		\centering
+		\begin{minipage}[c]{.45\textwidth}
+		\begin{tikzpicture}
+			\tikzstyle{Vertex} 	= [draw, solid,  fill=white, minimum size=6mm, inner sep=0pt]
+			\tikzstyle{Exposed}	= [dashed]
+			\tikzstyle{Boy}		= [circle]
+			\tikzstyle{Girl}		= [diamond, minimum size=7mm]
+			\tikzstyle{MC}		= [very thick, red]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (b1) at (0,6) [Vertex][Boy][Exposed] {$1$};
+			\node (b2) at (0,5) [Vertex][Boy][Exposed] {$2$};
+			\node (b3) at (0,4) [Vertex][Boy] {$3$};
+			\node (b4) at (0,3) [Vertex][Boy] {$4$};
+			\node (b5) at (0,2) [Vertex][Boy][Exposed] {$5$};
+			\node (b6) at (0,1) [Vertex][Boy] {$6$};
+			
+			\node (ga) at (4,6.00) [Vertex][Girl][Exposed] {$A$};
+			\node (gb) at (4,4.75) [Vertex][Girl][Exposed] {$B$};
+			\node (gc) at (4,3.50) [Vertex][Girl] {$C$};
+			\node (gd) at (4,2.25) [Vertex][Girl] {$D$};
+			\node (ge) at (4,1.00) [Vertex][Girl] {$E$};
+			
+			\draw [-] (b1) to (gc) [NM];
+			\draw [-] (b2) to (gd) [NM];
+			\draw [-] (b3) to (gc) [NM];
+			\draw [-] (b3) to (gd) [MC];
+			\draw [-] (b4) to (ga) [NM];
+			\draw [-] (b4) to (gb) [NM];
+			\draw [-] (b4) to (gd) [NM];
+			\draw [-] (b4) to (ge) [MC];
+			\draw [-] (b5) to (gc) [NM];
+			\draw [-] (b5) to (gd) [NM];
+			\draw [-] (b6) to (ga) [NM];
+			\draw [-] (b6) to (gb) [NM];
+			\draw [-] (b6) to (gc) [MC];
+			\draw [-] (b6) to (gd) [NM];
+			\draw [-] (b6) to (ge) [NM];
+		\end{tikzpicture}
+		\end{minipage}
+	\hfill
+		\centering
+		\begin{minipage}[c]{.45\textwidth}
+			\begin{tikzpicture}
+				\tikzstyle{Vertex} 	= [draw, solid,  fill=white, minimum size=6mm, inner sep=0pt]
+				\tikzstyle{Exposed}	= [dashed]
+				\tikzstyle{Boy}		= [circle]
+				\tikzstyle{Girl}		= [diamond, minimum size=7mm]
+				\tikzstyle{MC}		= [very thick, red]
+				\tikzstyle{NM}		= [gray]
+				
+				\node (b1) at (0.0, 3.5) [Vertex][Boy][Exposed] {$1$};
+				\node (b2) at (0.0, 1.5) [Vertex][Boy][Exposed] {$2$};
+				\node (b5) at (0.0, 2.5) [Vertex][Boy][Exposed] {$5$};
+					
+				\node (gc) at (1.5, 3) [Vertex][Girl] {$C$};
+				\node (gd) at (1.5, 2) [Vertex][Girl] {$D$};
+				
+				\node (b6) at (3.0, 3) [Vertex][Boy] {$6$};
+				\node (b3) at (3.0, 2) [Vertex][Boy] {$3$};
+					
+				\node (ga) at (4.5, 3) [Vertex][Girl][Exposed] {$A$};
+				%\node (gb) at (4.5, 3) [Vertex][Girl][Exposed] {$B$};
+				%\node (ge) at (4.5, 2) [Vertex][Girl] {$E$};
+				
+				\draw (b1) -- (gc) -- (b6) -- (ga) [line width=10pt, red, opacity=0.3];
+					
+				\draw [-] (b1) to (gc) [NM];
+				\draw [-] (b2) to (gd) [NM];
+				\draw [-] (b3) to (gd) [MC];
+				\draw [-] (b5) to (gc) [NM];
+				\draw [-] (b5) to (gd) [NM];
+				\draw [-] (b6) to (ga) [NM];
+				%\draw [-] (b6) to (gb) [NM];
+				\draw [-] (b6) to (gc) [MC];
+				%\draw [-] (b6) to (ge) [NM];
+				
+				
+			\end{tikzpicture}
+		\end{minipage}
+	\hfill
+	\end{figure}
+	\end{center}
+
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Find An Augmenting Path Using BFS}
+
+	\begin{center}
+	\begin{figure}[h]
+	\hfill
+		\centering
+		\begin{minipage}[c]{.45\textwidth}
+			\begin{tikzpicture}
+				\tikzstyle{Vertex} 	= [draw, solid,  fill=white, minimum size=6mm, inner sep=0pt]
+				\tikzstyle{Exposed}	= [dashed]
+				\tikzstyle{Boy}		= [circle]
+				\tikzstyle{Girl}		= [diamond, minimum size=7mm]
+				\tikzstyle{MC}		= [very thick, red]
+				\tikzstyle{NM}		= [gray]
+				
+				\node (b1) at (0,6) [Vertex][Boy] {$1$};
+				\node (b2) at (0,5) [Vertex][Boy][Exposed] {$2$};
+				\node (b3) at (0,4) [Vertex][Boy] {$3$};
+				\node (b4) at (0,3) [Vertex][Boy] {$4$};
+				\node (b5) at (0,2) [Vertex][Boy][Exposed] {$5$};
+				\node (b6) at (0,1) [Vertex][Boy] {$6$};
+				
+				\node (ga) at (4,6.00) [Vertex][Girl] {$A$};
+				\node (gb) at (4,4.75) [Vertex][Girl][Exposed] {$B$};
+				\node (gc) at (4,3.50) [Vertex][Girl] {$C$};
+				\node (gd) at (4,2.25) [Vertex][Girl] {$D$};
+				\node (ge) at (4,1.00) [Vertex][Girl] {$E$};
+				
+				\draw [-] (b1) to (gc) [MC];
+				\draw [-] (b2) to (gd) [NM];
+				\draw [-] (b3) to (gc) [NM];
+				\draw [-] (b3) to (gd) [MC];
+				\draw [-] (b4) to (ga) [NM];
+				\draw [-] (b4) to (gb) [NM];
+				\draw [-] (b4) to (gd) [NM];
+				\draw [-] (b4) to (ge) [MC];
+				\draw [-] (b5) to (gc) [NM];
+				\draw [-] (b5) to (gd) [NM];
+				\draw [-] (b6) to (ga) [MC];
+				\draw [-] (b6) to (gb) [NM];
+				\draw [-] (b6) to (gc) [NM];
+				\draw [-] (b6) to (gd) [NM];
+				\draw [-] (b6) to (ge) [NM];
+			\end{tikzpicture}
+		\end{minipage}
+	\hfill
+		\centering
+		\begin{minipage}[c]{.45\textwidth}
+			\begin{tikzpicture}
+				\tikzstyle{Vertex} 	= [draw, solid,  fill=white, minimum size=6mm, inner sep=0pt]
+				\tikzstyle{Exposed}	= [dashed]
+				\tikzstyle{Boy}		= [circle]
+				\tikzstyle{Girl}	= [diamond, minimum size=7mm]
+				\tikzstyle{MC}		= [very thick, red]
+				\tikzstyle{NM}		= [gray]
+					
+				\node (b2) at (0.0, 2) [Vertex][Boy][Exposed] {$2$};
+				\node (b5) at (0.0, 3) [Vertex][Boy][Exposed] {$5$};
+						
+				\node (gc) at (1.5, 3) [Vertex][Girl] {$C$};
+				\node (gd) at (1.5, 2) [Vertex][Girl] {$D$};
+				
+				\node (b1) at (3.0, 3) [Vertex][Boy] {$1$};	
+				\node (b3) at (3.0, 2) [Vertex][Boy] {$3$};
+
+					
+				\draw [-] (b1) to (gc) [MC];
+				\draw [-] (b2) to (gd) [NM];
+				\draw [-] (b3) to (gd) [MC];
+				\draw [-] (b5) to (gc) [NM];
+				\draw [-] (b5) to (gd) [NM];
+			\end{tikzpicture}
+		\end{minipage}
+	\hfill
+	\end{figure}
+	\end{center}
+
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Examples of BFS Failure on non-bipartite graphs}
+	\begin{itemize}
+		\item Initial graph
+	\end{itemize}
+	{\mode<presentation>{\tiny}
+	\begin{center}
+	\begin{tikzpicture}[scale=0.7]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Exposed}	= [dashed]
+		\tikzstyle{MC}		= [very thick, red]
+		\tikzstyle{NM}		= [gray]
+			
+		\node (v1) at (0.0, 5) [Vertex][Exposed] {$1$};
+		\node (v2) at (1.5, 5) [Vertex] {$2$};
+		\node (v3) at (3.0, 5) [Vertex] {$3$};
+		\node (v4) at (4.5, 6) [Vertex] {$4$};
+		\node (v5) at (4.5, 4) [Vertex] {$5$};
+		\node (v6) at (6.0, 6) [Vertex][Exposed] {$6$};
+			
+		\draw [-] (v1) to (v2) [NM];	
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v3) to (v5) [NM];
+		\draw [-] (v4) to (v5) [MC];
+		\draw [-] (v4) to (v6) [NM];	
+	\end{tikzpicture}
+	\end{center}
+	}
+
+	\begin{itemize}
+		\item Using BFS
+	\end{itemize}
+	{\mode<presentation>{\tiny}
+	\begin{center}
+		\begin{tikzpicture}[scale=0.7]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Exposed}	= [dashed]
+			\tikzstyle{MC}		= [very thick, red]
+			\tikzstyle{NM}		= [gray]
+				
+			\node (v1) at (0.0, 5) [Vertex][Exposed] {$1$};
+			\node (v2) at (1.5, 5) [Vertex] {$2$};
+			\node (v3) at (3.0, 5) [Vertex] {$3$};
+			\node (v4) at (4.5, 6) [Vertex] {$4$};
+			\node (v5) at (4.5, 4) [Vertex] {$5$};
+				
+			\draw [-] (v1) to (v2) [NM];	
+			\draw [-] (v2) to (v3) [MC];
+			\draw [-] (v3) to (v4) [NM];
+			\draw [-] (v3) to (v5) [NM];
+		\end{tikzpicture}
+	\end{center}
+	}
+
+	\begin{itemize}
+		\item Actual augmenting path
+	\end{itemize}
+	{\mode<presentation>{\tiny}
+	\begin{center}
+		\begin{tikzpicture}[scale=0.7]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Exposed}	= [dashed]
+			\tikzstyle{MC}		= [very thick, red]
+			\tikzstyle{NM}		= [gray]
+				
+			\node (v1) at (0.0, 5) [Vertex][Exposed] {$1$};
+			\node (v2) at (1.5, 5) [Vertex] {$2$};
+			\node (v3) at (3.0, 5) [Vertex] {$3$};
+			\node (v4) at (6.0, 5) [Vertex] {$4$};
+			\node (v5) at (4.5, 5) [Vertex] {$5$};
+			\node (v6) at (7.5, 5) [Vertex][Exposed] {$6$};
+				
+			\draw [-] (v1) to (v2) [NM];	
+			\draw [-] (v2) to (v3) [MC];
+			\draw [-] (v3) to (v5) [NM];
+			\draw [-] (v5) to (v4) [MC];
+			\draw [-] (v4) to (v6) [NM];
+		\end{tikzpicture}
+	\end{center}
+	}
+}
+
+%---------------------slide--------------------%
+\section{Edmonds m algorithm}
+\frame
+{
+	\frametitle{Alternating Tree}
+	\begin{description}
+		\item[Alternating Tree] is a tree $J$, each of whose edges joins an inner vertex to an outer vertex so that each inner vertex of $J$ meets exactly two edges of $J$.
+		\item[-] An alternating tree contains one more outer vertex than inner vertices.
+	\end{description}
+	\begin{center}
+	\begin{figure}[h]
+	\hfill
+		\centering
+		\begin{minipage}[c]{.70\textwidth}
+			\begin{tikzpicture}[scale=.9]
+				\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+				\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=2mm, inner sep=0pt]
+				\tikzstyle{OUT}		= [fill = white]
+				\tikzstyle{IN}		= [fill = black]
+				\tikzstyle{Exposed}	= [dashed, OUT]
+				\tikzstyle{MC}		= [very thick, black]
+				\tikzstyle{NM}		= [gray]
+				
+				\node (v0) at (0,0) [Vertex][OUT] {}; 
+				\node (v1) at (1,0) [Vertex][IN] {};
+				\node (v2) at (2,0) [Vertex][OUT] {};
+				\node (v3) at (3,1) [Vertex][IN] {};
+				\node (v4) at (4,1) [Vertex][OUT] {};
+				\node (v5) at (5,1.5) [Vertex][IN] {};
+				\node (v6) at (6,1.5) [Vertex][OUT] {};
+				\node (v7) at (5,0.5) [Vertex][IN] {};
+				\node (v8) at (6,0.5) [Vertex][OUT] {};
+				\node (v9) at (3,-1) [Vertex][IN] {};
+				\node (v10) at(4, -1) [Vertex][OUT] {};
+				\node (v11) at(5, -1) [Vertex][IN] {};
+				\node (v12) at(6, -1) [Vertex][OUT] {};
+				\node (v13) at(7, -0.5) [Vertex][IN] {};
+				\node (v14) at(8, -0.5) [Vertex][OUT] {};
+				\node (v15) at(7, -1.5) [Vertex][IN] {};
+				\node (v16) at(8, -1.5) [Vertex][OUT] {};
+				
+				\draw [-] (v0) to (v1);
+				\draw [-] (v1) to (v2);
+				\draw [-] (v2) to (v3);
+				\draw [-] (v3) to (v4);
+				\draw [-] (v4) to (v5);
+				\draw [-] (v5) to (v6);
+				\draw [-] (v4) to (v7);
+				\draw [-] (v7) to (v8);
+				\draw [-] (v2) to (v9);
+				\draw [-] (v9) to (v10);
+				\draw [-] (v10) to (v11);
+				\draw [-] (v11) to (v12);
+				\draw [-] (v12) to (v13);
+				\draw [-] (v13) to (v14);
+				\draw [-] (v12) to (v15);
+				\draw [-] (v15) to (v16);	
+			\end{tikzpicture}
+		\end{minipage}
+	\hfill
+		\centering
+		\begin{minipage}[c]{.20\textwidth}
+			\framebox{
+			\begin{tikzpicture}
+				\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+				\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=2mm, inner sep=0pt]
+				\tikzstyle{OUT}		= [fill = white]
+				\tikzstyle{IN}		= [fill = black]
+				\tikzstyle{Exposed}	= [dashed, OUT]
+				\tikzstyle{MC}		= [very thick, black]
+				\tikzstyle{NM}		= [gray]
+				
+				\node (v0) at (0,0) [Vertex][OUT][label=right:outer vertex] {}; 
+				\node (v1) at (0,1) [Vertex][IN][label=right:inner vertex] {};
+
+			\end{tikzpicture}
+			}
+		\end{minipage}
+	\hfill
+	\end{figure}
+	\end{center}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Planted Tree}
+	\begin{description}
+		\item[Planted tree] is an alternating tree $J(M)$ of $G$ for matching $M$ s.t. $M \cap J$ is a maximum matching of $J$.
+		\item[Root] is a vertex $r$ in $J$ which is exposed.
+	\end{description}
+
+	\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
+			\tikzstyle{OUT}		= [fill = white]
+			\tikzstyle{IN}		= [fill = black]
+			\tikzstyle{Exposed}	= [dashed, OUT]
+			\tikzstyle{MC}		= [very thick, red]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (v0) at (0,0) [Vertex][OUT][Exposed][label=above:$r$] {}; 
+			\node (v1) at (1,0) [Vertex][IN] {};
+			\node (v2) at (2,0) [Vertex][OUT] {};
+			\node (v3) at (3,1) [Vertex][IN] {};
+			\node (v4) at (4,1) [Vertex][OUT] {};
+			\node (v5) at (5,1.5) [Vertex][IN] {};
+			\node (v6) at (6,1.5) [Vertex][OUT] {};
+			\node (v7) at (5,0.5) [Vertex][IN] {};
+			\node (v8) at (6,0.5) [Vertex][OUT] {};
+			\node (v9) at (3,-1) [Vertex][IN] {};
+			\node (v10) at(4, -1) [Vertex][OUT] {};
+			\node (v11) at(5, -1) [Vertex][IN] {};
+			\node (v12) at(6, -1) [Vertex][OUT] {};
+			\node (v13) at(7, -0.5) [Vertex][IN] {};
+			\node (v14) at(8, -0.5) [Vertex][OUT] {};
+			\node (v15) at(7, -1.5) [Vertex][IN] {};
+			\node (v16) at(8, -1.5) [Vertex][OUT] {};
+			
+			\draw [-] (v0) to (v1) [NM];
+			\draw [-] (v1) to (v2) [MC];
+			\draw [-] (v2) to (v3) [NM];
+			\draw [-] (v3) to (v4) [MC];
+			\draw [-] (v4) to (v5) [NM];
+			\draw [-] (v5) to (v6) [MC];
+			\draw [-] (v4) to (v7) [NM];
+			\draw [-] (v7) to (v8) [MC];
+			\draw [-] (v2) to (v9) [NM];
+			\draw [-] (v9) to (v10) [MC];
+			\draw [-] (v10) to (v11) [NM];
+			\draw [-] (v11) to (v12) [MC];
+			\draw [-] (v12) to (v13) [NM];
+			\draw [-] (v13) to (v14) [MC];
+			\draw [-] (v12) to (v15) [NM];
+			\draw [-] (v15) to (v16) [MC];	
+		\end{tikzpicture}
+	\end{center}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Augmenting Tree}
+	\begin{description}
+		\item[Augmenting tree] is a planted tree $J(M)$ plus an edge $e$ of $G$ such that one end-point of $e$ is an outer vertex $v_{1}$ of $J$ and the other end-point $v_{2}$ is exposed not in $J$.
+	\end{description}
+
+	\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
+			\tikzstyle{OUT}		= [fill = white]
+			\tikzstyle{IN}		= [fill = black]
+			\tikzstyle{Exposed}	= [dashed, OUT]
+			\tikzstyle{MC}		= [very thick, red]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (v0) at (0,0) [Vertex][OUT][Exposed][label=above:$r$] {}; 
+			\node (v1) at (1,0) [Vertex][IN] {};
+			\node (v2) at (2,0) [Vertex][OUT] {};
+			\node (v3) at (3,1) [Vertex][IN] {};
+			\node (v4) at (4,1) [Vertex][OUT] {};
+			\node (v5) at (5,1.5) [Vertex][IN] {};
+			\node (v6) at (6,1.5) [Vertex][OUT] {};
+			\node (v7) at (5,0.5) [Vertex][IN] {};
+			\node (v8) at (6,0.5) [Vertex][OUT] {};
+			\node (v9) at (3,-1) [Vertex][IN] {};
+			\node (v10) at(4, -1) [Vertex][OUT] {};
+			\node (v11) at(5, -1) [Vertex][IN] {};
+			\node (v12) at(6, -1) [Vertex][OUT] {};
+			\node (v13) at(7, -0.5) [Vertex][IN] {};
+			\node (v14) at(8, -0.5) [Vertex][OUT] {};
+			\node (v15) at(7, -1.5) [Vertex][IN] {};
+			\node (v16) at(8, -1.5) [Vertex][OUT] {};
+			\node (v17) at(9, -0.5) [Vertex][OUT][Exposed] {};
+			
+			\draw [-] (v0) to (v1) [NM];
+			\draw [-] (v1) to (v2) [MC];
+			\draw [-] (v2) to (v3) [NM];
+			\draw [-] (v3) to (v4) [MC];
+			\draw [-] (v4) to (v5) [NM];
+			\draw [-] (v5) to (v6) [MC];
+			\draw [-] (v4) to (v7) [NM];
+			\draw [-] (v7) to (v8) [MC];
+			\draw [-] (v2) to (v9) [NM];
+			\draw [-] (v9) to (v10) [MC];
+			\draw [-] (v10) to (v11) [NM];
+			\draw [-] (v11) to (v12) [MC];
+			\draw [-] (v12) to (v13) [NM];
+			\draw [-] (v13) to (v14) [MC];
+			\draw [-] (v12) to (v15) [NM];
+			\draw [-] (v15) to (v16) [MC];
+			\draw [-] (v14) to (v17) [NM];
+		\end{tikzpicture}
+	\end{center}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Flower}
+	\begin{description}
+		\item[Stem] is an alternating path with an exposed vertex at one end and a matching edge at the other end.
+
+		\item[Blossom] is an odd cycle in $G$ for which $M \cap B$ is a maximum matching in $B$ with \emph{tip} exposed for $M \cap B$.
+
+		\item[Flower] consists of a blossom and a stem which intersect only at the tip of the stem.
+	\end{description}
+	\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
+			\tikzstyle{OUT}		= [fill = white]
+			\tikzstyle{IN}		= [fill = black]
+			\tikzstyle{Exposed}	= [dashed, OUT]
+			\tikzstyle{MC}		= [very thick, red]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
+			\node (v1) at (1,1) [Vertex][IN] {};
+			\node (v2) at (2,1) [Vertex][OUT] {};
+			\node (v3) at (3,1) [Vertex][IN] {};
+			\node (v4) at (4,1) [Vertex][OUT][label=above:\emph{tip}] {};
+			\node (v5) at (5,2) [Vertex][IN] {};
+			\node (v6) at (6.2, 1.8) [Vertex][OUT] {};
+			\node (v7) at (5,0) [Vertex][IN] {};
+			\node (v8) at (6.2, 0.2) [Vertex][OUT] {};
+			
+			\draw [-] (v0) to (v1) [NM];
+			\draw [-] (v1) to (v2) [MC];
+			\draw [-] (v2) to (v3) [NM];
+			\draw [-] (v3) to (v4) [MC];
+			\draw [-] (v4) to (v5) [NM];
+			\draw [-] (v5) to (v6) [MC];
+			\draw [-] (v4) to (v7) [NM];
+			\draw [-] (v7) to (v8) [MC];
+			\draw [-] (v8) to (v6) [NM];
+		\end{tikzpicture}
+	\end{center}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Flowered Tree}
+	\begin{description}
+		\item[Flowered tree] is a planted tree $J$ plus an edge $e$ of $G$ which joins a pair of outer vertices of $J$. The union of $e$ and the two paths which join its outer-vertex end-points to the root of of $J$ is a flower, $F$.
+	\end{description}
+
+	\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
+			\tikzstyle{OUT}		= [fill = white]
+			\tikzstyle{IN}		= [fill = black]
+			\tikzstyle{Exposed}	= [dashed, OUT]
+			\tikzstyle{MC}		= [very thick, red]
+			\tikzstyle{NM}		= [gray]
+			\tikzstyle{DS}		= [gray, dashed]
+			
+			\node (v0) at (0,0) [Vertex][OUT][Exposed][label=above:$r$] {}; 
+			\node (v1) at (1,0) [Vertex][IN] {};
+			\node (v2) at (2,0) [Vertex][OUT] {};
+			\node (v3) at (3,1) [Vertex][IN] {};
+			\node (v4) at (4,1) [Vertex][OUT] {};
+			\node (v5) at (5,1.5) [Vertex][IN] {};
+			\node (v6) at (6,1.5) [Vertex][OUT] {};
+			\node (v7) at (5,0.5) [Vertex][IN] {};
+			\node (v8) at (6,0.5) [Vertex][OUT] {};
+			\node (v9) at (3,-1) [Vertex][IN] {};
+			\node (v10) at(4, -1) [Vertex][OUT] {};
+			\node (v11) at(5, -1) [Vertex][IN] {};
+			\node (v12) at(6, -1) [Vertex][OUT] {};
+			\node (v13) at(7, -0.5) [Vertex][IN] {};
+			\node (v14) at(8, -0.5) [Vertex][OUT] {};
+			\node (v15) at(7, -1.5) [Vertex][IN] {};
+			\node (v16) at(8, -1.5) [Vertex][OUT] {};
+			
+			\draw [-] (v0) to (v1) [NM];
+			\draw [-] (v1) to (v2) [MC];
+			\draw [-] (v2) to (v3) [NM];
+			\draw [-] (v3) to (v4) [MC];
+			\draw [-] (v4) to (v5) [NM];
+			\draw [-] (v5) to (v6) [MC];
+			\draw [-] (v4) to (v7) [NM];
+			\draw [-] (v7) to (v8) [MC];
+			\draw [-] (v2) to (v9) [NM];
+			\draw [-] (v9) to (v10) [MC];
+			\draw [-] (v10) to (v11) [NM];
+			\draw [-] (v11) to (v12) [MC];
+			\draw [-] (v12) to (v13) [NM];
+			\draw [-] (v13) to (v14) [MC];
+			\draw [-] (v12) to (v15) [NM];
+			\draw [-] (v15) to (v16) [MC];
+			\draw [-] (v6) to [in=0, out=0](v8) [DS];
+		\end{tikzpicture}
+	\end{center}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Shrinking the Blossom}
+	\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
+			\tikzstyle{OUT}		= [fill = white]
+			\tikzstyle{IN}		= [fill = black]
+			\tikzstyle{Exposed}	= [dashed, OUT]
+			\tikzstyle{MC}		= [very thick, red]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
+			\node (v1) at (1,1) [Vertex][IN] {};
+			\node (v2) at (2,1) [Vertex][OUT] {};
+			\node (v3) at (3,1) [Vertex][IN] {};
+			\node (v4) at (4,1) [Vertex][OUT][label=above:\emph{tip}] {};
+			\node (v5) at (5,2) [Vertex][IN] {};
+			\node (v6) at (6.2, 1.8) [Vertex][OUT] {};
+			\node (v7) at (5,0) [Vertex][IN] {};
+			\node (v8) at (6.2, 0.2) [Vertex][OUT] {};
+			
+			\draw [-] (v0) to (v1) [NM];
+			\draw [-] (v1) to (v2) [MC];
+			\draw [-] (v2) to (v3) [NM];
+			\draw [-] (v3) to (v4) [MC];
+			\draw [-] (v4) to (v5) [NM];
+			\draw [-] (v5) to (v6) [MC];
+			\draw [-] (v4) to (v7) [NM];
+			\draw [-] (v7) to (v8) [MC];
+			\draw [-] (v8) to (v6) [NM];
+
+			%\draw [-] (v6) to (7.2, 2.8) [NM];
+			\draw [-] (v8) to (7.2, -.8) [NM];
+		\end{tikzpicture}
+	\end{center}
+	
+	\begin{center}
+		\begin{tikzpicture}			
+			\draw [->] (0,1) to (0,0) [very thick] node [right, midway] {shirnk};
+		\end{tikzpicture}
+	\end{center}
+
+	\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
+			\tikzstyle{OUT}		= [fill = white]
+			\tikzstyle{IN}		= [fill = black]
+			\tikzstyle{Exposed}	= [dashed, OUT]
+			\tikzstyle{MC}		= [very thick, red]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
+			\node (v1) at (1,1) [Vertex][IN] {};
+			\node (v2) at (2,1) [Vertex][OUT] {};
+			\node (v3) at (3,1) [Vertex][IN] {};
+			\node (v4) at (4,1) [Flower][OUT] {};
+			\pgfplothandlerlineto
+			\pgfplotfunction{\x}{0, 3, ..., 540}{
+				\pgfpointxy     
+				{-0.2 * cos(\x) * sin(5 / 3 * \x) + 4}
+				{-0.2 * sin(\x) * sin(5 / 3 * \x) + 1}
+			}
+			\pgfusepath{stroke}
+			
+			\draw [-] (v0) to (v1) [NM];
+			\draw [-] (v1) to (v2) [MC];
+			\draw [-] (v2) to (v3) [NM];
+			\draw [-] (v3) to (v4) [MC];
+
+			%\draw [-] (v4) to (5, 2) [NM];
+			\draw [-] (v4) to (5, 0) [NM];
+		\end{tikzpicture}
+	\end{center}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Finding Augmenting Path}
+	\begin{center}
+	\begin{figure}[h]
+	\hfill
+		\centering
+		\begin{minipage}[c]{.45\textwidth}
+			\begin{center}
+				\begin{tikzpicture}
+					\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+					\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
+					\tikzstyle{OUT}		= [fill = white]
+					\tikzstyle{IN}		= [fill = black]
+					\tikzstyle{Exposed}	= [dashed, OUT]
+					\tikzstyle{MC}		= [very thick, red]
+					\tikzstyle{NM}		= [gray]
+					
+					\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
+					\node (v1) at (1,1) [Vertex][IN] {};
+					\node (v2) at (2,1) [Vertex][OUT] {};
+					\node (v3) at (3,1) [Vertex][IN] {};
+					\node (v4) at (4,1) [Flower][OUT] {};
+					\pgfplothandlerlineto
+					\pgfplotfunction{\x}{0, 3, ..., 540}{
+						\pgfpointxy     
+						{-0.2 * cos(\x) * sin(5 / 3 * \x) + 4}
+						{-0.2 * sin(\x) * sin(5 / 3 * \x) + 1}
+					}
+					\pgfusepath{stroke}
+					
+					\draw [-] (v0) to (v1) [NM];
+					\draw [-] (v1) to (v2) [MC];
+					\draw [-] (v2) to (v3) [NM];
+					\draw [-] (v3) to (v4) [MC];
+
+					%\draw [-] (v4) to (5, 2) [NM];
+					\draw [-] (v4) to (5, 0) [NM];
+				\end{tikzpicture}
+			\end{center}
+		\end{minipage}
+	\hfill
+		\centering
+		\begin{minipage}[c]{.45\textwidth}
+			\begin{center}
+				\begin{tikzpicture}
+					\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+					\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
+					\tikzstyle{OUT}		= [fill = white]
+					\tikzstyle{IN}		= [fill = black]
+					\tikzstyle{Exposed}	= [dashed, OUT]
+					\tikzstyle{MC}		= [very thick, red]
+					\tikzstyle{NM}		= [gray]
+					
+					\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
+					\node (v1) at (1,1) [Vertex][IN] {};
+					\node (v2) at (2,1) [Vertex][OUT] {};
+					\node (v3) at (3,1) [Vertex][IN] {};
+					\node (v4) at (4,1) [Flower][OUT] {};
+					\pgfplothandlerlineto
+					\pgfplotfunction{\x}{0, 3, ..., 540}{
+						\pgfpointxy     
+						{-0.2 * cos(\x) * sin(5 / 3 * \x) + 4}
+						{-0.2 * sin(\x) * sin(5 / 3 * \x) + 1}
+					}
+					\pgfusepath{stroke}
+
+					\node (v5) at (5, 2) [Vertex][OUT][Exposed] {};
+					
+					\draw [-] (v0) to (v1) [NM];
+					\draw [-] (v1) to (v2) [MC];
+					\draw [-] (v2) to (v3) [NM];
+					\draw [-] (v3) to (v4) [MC];
+
+					\draw [-] (v4) to (v5) [NM];
+					\draw [-] (v4) to (5, 0) [NM];
+				\end{tikzpicture}
+			\end{center}
+		\end{minipage}
+	\hfill
+	\end{figure}
+	\end{center}
+
+	\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
+			\tikzstyle{OUT}		= [fill = white]
+			\tikzstyle{IN}		= [fill = black]
+			\tikzstyle{Exposed}	= [dashed, OUT]
+			\tikzstyle{MC}		= [very thick, red]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
+			\node (v1) at (1,1) [Vertex][IN] {};
+			\node (v2) at (2,1) [Vertex][OUT] {};
+			\node (v3) at (3,1) [Vertex][IN] {};
+			\node (v4) at (4,1) [Vertex][OUT][label=above:\emph{tip}] {};
+			\node (v5) at (5,2) [Vertex][IN] {};
+			\node (v6) at (6.2, 1.8) [Vertex][OUT] {};
+			\node (v7) at (5,0) [Vertex][IN] {};
+			\node (v8) at (6.2, 0.2) [Vertex][OUT] {};
+
+			\node (v9) at (5.5, 2.8) [Vertex][OUT][Exposed] {};
+
+			\draw (v0) -- (v1) -- (v2) -- (v3) -- (v4) -- (v7) -- (v8) -- (v6) -- (v5) --  (v9) [line width=10pt, red, opacity=0.3];
+			
+			\draw [-] (v0) to (v1) [NM];
+			\draw [-] (v1) to (v2) [MC];
+			\draw [-] (v2) to (v3) [NM];
+			\draw [-] (v3) to (v4) [MC];
+			\draw [-] (v4) to (v5) [NM];
+			\draw [-] (v5) to (v6) [MC];
+			\draw [-] (v4) to (v7) [NM];
+			\draw [-] (v7) to (v8) [MC];
+			\draw [-] (v8) to (v6) [NM];
+
+			\draw [-] (v5) to (v9) [NM];
+			\draw [-] (v8) to (7.2, -.8) [NM];
+		\end{tikzpicture}
+	\end{center}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Matching}
+	
+	\begin{description}
+		\item[Matching in a graph] is a set of edges, no two of which meet at a common vertex.
+		\item[Maximum matching] is a matching of maximum cardinality.
+	\end{description}
+	\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{figures/matching.png}
+	\end{figure}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Examples}
+	{\scriptsize
+	A graph $G=(V,E)$ and a matching $M$.
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][Exposed] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex] {$4$};
+		\node (v5) at (4.5, 3.5) [Vertex] {$5$};
+		\node (v6) at (3.0, 3.5) [Vertex] {$6$};
+		\node (v7) at (1.5, 3.5) [Vertex][Exposed] {$7$};
+		\node (v8) at (3.0, 2.0) [Vertex] {$8$};
+		\node (v9) at (4.5, 2.0) [Vertex] {$9$};
+		\node (v10) at (6.0, 3.5) [Vertex] {$10$};
+		
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v2) to (v7) [NM];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
+		\draw [-] (v5) to (v6) [NM];
+		\draw [-] (v5) to (v9) [NM];
+		\draw [-] (v5) to (v10) [NM];
+		\draw [-] (v6) to (v7) [NM];
+		\draw [-] (v6) to (v8) [MC];
+		\draw [-] (v8) to (v9) [NM];
+		\draw [-] (v9) to (v10) [MC];
+	\end{tikzpicture}
+	\end{center}
+
+	Start a BFS from 1, encounter the odd cycle 5-10-9.
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][Exposed][label=above:$o$] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex][label=above:$i$] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex][label=above:$o$] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex][label=above:$i$] {$4$};
+		\node (v5) at (6.0, 5.0) [Vertex][label=above:$o$] {$5$};
+		\node (v10) at (7.5, 5.0) [Vertex][label=above:$i$] {$10$};
+		\node (v9) at (8.0, 3.5) [Vertex][label=above:$o$] {$9$};
+		
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
+		\draw [-] (v5) to (v9) [NM];
+		\draw [-] (v5) to (v10) [NM];	
+		\draw [-] (v9) to (v10) [MC];
+	\end{tikzpicture}
+	\end{center}
+	}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Examples}
+
+	{\scriptsize
+	Shrink 5,10,9 into a single macrovertex. 
+	Continue the search, and encounter the cycle (5,10,9)-6-8.
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][label=above:$o$][Exposed] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex][label=above:$i$] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex][label=above:$o$] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex][label=above:$i$] {$4$};
+		\node (v5) at (6.0, 5.0) [Flower][label=above:$o$][label=below:\scriptsize{$5,10,9$}] {};
+			%\myflower.apply(6.0, 5.0, 0.3)	
+				\pgfplothandlerlineto
+				\pgfplotfunction{\x}{0, 3, ..., 540}{
+					\pgfpointxy     
+					{-0.2 * cos(\x) * sin(5 / 3 * \x) + 6.0}
+					{-0.2 * sin(\x) * sin(5 / 3 * \x) + 5.0}
+				}
+				\pgfusepath{stroke}
+		\node (v6) at (7.5, 5.0) [Vertex][label=above:$i$] {$6$};
+		\node (v8) at (8.0, 3.5) [Vertex][label=above:$o$] {$8$};
+		
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
+		\draw [-] (v5) to (v6) [NM];
+		\draw [-] (v5) to (v8) [NM];	
+		\draw [-] (v6) to (v8) [MC];
+	\end{tikzpicture}
+	\end{center}
+	
+	Shrink (5,10,9),6,8 into a single macro vertex. 
+	Continue the serch, and encounter a exposed vertex 7.
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][label=above:$o$][Exposed] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex][label=above:$i$] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex][label=above:$o$] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex][label=above:$i$] {$4$};
+		\node (v5) at (6.0, 5.0) [Flower][label=above:$o$][label=below:\scriptsize{$(5,10,9),6,8$}] {};
+			%\myflower.apply(6.0, 5.0, 0.3)	
+				\pgfplothandlerlineto
+				\pgfplotfunction{\x}{0, 3, ..., 540}{
+					\pgfpointxy     
+					{-0.2 * cos(\x) * sin(5 / 3 * \x) + 6.0}
+					{-0.2 * sin(\x) * sin(5 / 3 * \x) + 5.0}
+				}
+				\pgfusepath{stroke}
+		\node (v7) at (7.5, 5.0) [Vertex][Exposed] {$7$};
+		
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
+		\draw [-] (v5) to (v7) [NM];
+	\end{tikzpicture}
+	\end{center}
+	}
+}
+
+%---------------------slide--------------------%
+\frame{
+	\frametitle{Examples}
+
+	{\scriptsize
+	An augmenting path in the shrunken graph is found.
+	By unshrinking, we get the following augmenting path $P$ in the original graph.
+	
+	\begin{center}
+	\begin{tikzpicture}[scale=0.8]
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=6mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][label=above:$o$][Exposed] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex][label=above:$i$] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex][label=above:$o$] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex][label=above:$i$] {$4$};
+		\node (v5) at (6.0, 5.0) [Vertex][label=above:$o$] {$5$};
+		\node (v10) at (7.5, 5.0) [Vertex][label=above:$i$] {$10$};
+		\node (v9) at (9.0, 5.0) [Vertex][label=above:$o$] {$9$};
+		\node (v8) at (10.5, 5.0) [Vertex][label=above:$i$] {$8$};
+		\node (v6) at (12.0, 5.0) [Vertex][label=above:$o$] {$6$};
+		\node (v7) at (13.5, 5.0) [Vertex][Exposed] {$7$};
+		
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
+		\draw [-] (v5) to (v10) [NM];
+		\draw [-] (v10) to (v9) [MC];
+		\draw [-] (v9) to (v8) [NM];
+		\draw [-] (v8) to (v6) [MC];
+		\draw [-] (v6) to (v7) [NM];
+	\end{tikzpicture}
+	\end{center}
+
+	Applying $M = M \oplus P$ yeilds following enlarged matching in the original graph.
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][Exposed] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex] {$4$};
+		\node (v5) at (4.5, 3.5) [Vertex] {$5$};
+		\node (v6) at (3.0, 3.5) [Vertex] {$6$};
+		\node (v7) at (1.5, 3.5) [Vertex][Exposed] {$7$};
+		\node (v8) at (3.0, 2.0) [Vertex] {$8$};
+		\node (v9) at (4.5, 2.0) [Vertex] {$9$};
+		\node (v10) at (6.0, 3.5) [Vertex] {$10$};
+		
+		\draw [-] (v1) to (v2) [MC];
+		\draw [-] (v2) to (v3) [NM];
+		\draw [-] (v2) to (v7) [NM];
+		\draw [-] (v3) to (v4) [MC];
+		\draw [-] (v4) to (v5) [NM];
+		\draw [-] (v5) to (v6) [NM];
+		\draw [-] (v5) to (v9) [NM];
+		\draw [-] (v5) to (v10) [MC];
+		\draw [-] (v6) to (v7) [MC];
+		\draw [-] (v6) to (v8) [NM];
+		\draw [-] (v8) to (v9) [MC];
+		\draw [-] (v9) to (v10) [NM];
+	\end{tikzpicture}
+	\end{center}
+	}
+}
+
+%---------------------slide--------------------%
+\section{Matching-duality theorem}
+\frame
+{
+	\frametitle{Matching-duality theorem}
+
+	\begin{block}{Linear programming duality theorem}
+		If
+		
+		\begin{center}
+		$x \geq 0, Ax \leq c$ 
+		
+		$y \geq 0, A^{T}y \geq b$
+		\end{center}
+		
+		for given real vectors $b$ and $c$ and real matrix $A$, then for real vectors $x$ and $y$,
+		
+		\begin{center}
+		$max_{x}(b,x) = min_{y}(c, y)$
+		\end{center}
+		
+		when such extrema exist.
+	\end{block}
+	
+	\begin{block}{K\"{o}nig theorem}
+		In a bipartite graph, the maximum size of a matching is equal to the minimum size of a vertex cover.
+	\end{block}
+
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Matching-duality theorem}
+	
+	\begin{description}
+	\item[Odd set cover] in a graph consists of a collection of vertices $S$ and odd-cardinality sets of vertices
+$O_{1} , O_{2} , ..., O_{t}$ , disjoint from one another and from $S$, such that every edge of $G$ is either
+incident with a vertex in $S$ or lies within an odd set $O_{j}$.
+	\item[The capacity] of the odd-set cover is defined as: $|S| + \sum\limits_{j=1}^{t} \frac{|O_{j}| - 1}{2}$
+	\end{description}
+	
+	\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{figures/oddset.pdf}
+	\end{figure}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Matching-duality theorem}
+	
+	\begin{block}{General K\"{o}nig theorem}
+		If $M$ is a maximum matching and $C$ is a minimum odd-set cover then
+		\begin{center}
+		$|M| = capacity(C)$
+		\end{center}
+	\end{block}
+	
+	\begin{itemize}
+	{
+		\item Proof:
+		
+		\bigskip
+		
+		It is obvious that the capacity-sum of any odd-set cover in $G$ is at least as large as the cardinality of any matching in $G$, so we have only to prove the existence in $G$ of an odd-set cover and a matching for which the numbers are equal.
+	}
+	\end{itemize}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Matching-duality theorem}
+	
+	\begin{itemize}
+	{
+		\item Proof:
+		
+		\bigskip
+		
+		For a pertect matching $M$ with no exposed vertices, the odd-set cover consists of two sets, one set  containing one of the vertices, the other containing all the other vertices.
+		
+		\bigskip
+		
+		For a graph which has a matching with one exposed vertices, the odd-set cover may be taken as one set containing all the vertices of the graph.
+		
+		\bigskip
+		
+		The general case can be proven by induction.
+		
+	}
+	\end{itemize}
+}
+
+%%---------------------slide--------------------%
+%\frame
+%{
+%	\frametitle{Matching-duality theorem}
+%	
+%	\begin{itemize}
+%	{
+%		\item Proof:
+%		
+%		\bigskip
+%		
+%		For a general case, we apply the algorithm to $(G, M)$, where $M$ is maximum, using some exposed vertex as the root, we obtain a graph $G'$ containing a maximally matched Hungarian tree $J$, a number of whose outer vertices are pseudo. Let $S_{J}$ consist of all odd sets of the following two types: sets each consisting of one inner vertex in $J$, and sets each consisting of the vertices in the complete expansion of one pseudovertex of $J$. The number of edges of $M$ which a member of $S_{J}$ covers is equal to the capacity of the member. An edge of $G$ is covered by a member of $S_{J}$ if and only if it is not in $G' - J$. Matching $M \sup (G' - J)$ is a maximum matching of $G' - J$ with one less exposed vertex, 
+%	}
+%	\end{itemize}
+%}
+
+\end{document}
