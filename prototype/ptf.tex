@@ -1094,8 +1094,8 @@
 {
 	\frametitle{Alternating Tree}
 	\begin{description}
-		\item[Alternating Tree] is a tree $J$, each of whose edges joins an inner vertex to an outer vertex so that each inner vertex of $J$ meets exactly two edges of $J$.
-		\item[-] An alternating tree contains one more outer vertex than inner vertices.
+		\item[Alternating Tree] is a tree $J$, each of whose edges joins an odd vertex to an even vertex so that each odd vertex of $J$ meets exactly two edges of $J$.
+		\item[-] An alternating tree contains one more even vertex than odd vertices.
 	\end{description}
 	\begin{center}
 	\begin{figure}[h]
@@ -1160,8 +1160,8 @@
 				\tikzstyle{MC}		= [very thick, black]
 				\tikzstyle{NM}		= [gray]
 				
-				\node (v0) at (0,0) [Vertex][OUT][label=right:outer vertex] {}; 
-				\node (v1) at (0,1) [Vertex][IN][label=right:inner vertex] {};
+				\node (v0) at (0,0) [Vertex][OUT][label=right:even vertex] {}; 
+				\node (v1) at (0,1) [Vertex][IN][label=right:odd vertex] {};
 
 			\end{tikzpicture}
 			}
@@ -1233,7 +1233,7 @@
 {
 	\frametitle{Augmenting Tree}
 	\begin{description}
-		\item[Augmenting tree] is a planted tree $J(M)$ plus an edge $e$ of $G$ such that one end-point of $e$ is an outer vertex $v_{1}$ of $J$ and the other end-point $v_{2}$ is exposed not in $J$.
+		\item[Augmenting tree] is a planted tree $J(M)$ plus an edge $e$ of $G$ such that one end-point of $e$ is an even vertex $v_{1}$ of $J$ and the other end-point $v_{2}$ is exposed not in $J$.
 	\end{description}
 
 	\begin{center}
@@ -1289,12 +1289,72 @@
 %---------------------slide--------------------%
 \frame
 {
-	\frametitle{Flower}
+	\frametitle{Stem}
 	\begin{description}
 		\item[Stem] is an alternating path with an exposed vertex at one end and a matching edge at the other end.
+		\item[Tip] is the non-exposed end vertex in the stem.
+	\end{description}
+	\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
+			\tikzstyle{OUT}		= [fill = white]
+			\tikzstyle{IN}		= [fill = black]
+			\tikzstyle{Exposed}	= [dashed, OUT]
+			\tikzstyle{MC}		= [very thick, red]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
+			\node (v1) at (1,1) [Vertex][IN] {};
+			\node (v2) at (2,1) [Vertex][OUT] {};
+			\node (v3) at (3,1) [Vertex][IN] {};
+			\node (v4) at (4,1) [Vertex][OUT][label=above:\emph{tip}] {};
+			
+			\draw [-] (v0) to (v1) [NM];
+			\draw [-] (v1) to (v2) [MC];
+			\draw [-] (v2) to (v3) [NM];
+			\draw [-] (v3) to (v4) [MC];
+		\end{tikzpicture}
+	\end{center}
+}
 
-		\item[Blossom] is an odd cycle in $G$ for which $M \cap B$ is a maximum matching in $B$ with \emph{tip} exposed for $M \cap B$.
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Blossom}
+	\begin{description}
+		\item[Blossom] is an odd cycle in $G$ for which $M \cap B$ is a maximum matching in $B$ with one vertex exposed for $M \cap B$.
+	\end{description}
+	\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
+			\tikzstyle{OUT}		= [fill = white]
+			\tikzstyle{IN}		= [fill = black]
+			\tikzstyle{Exposed}	= [dashed, OUT]
+			\tikzstyle{MC}		= [very thick, red]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (v4) at (4,1) [Vertex][Exposed][OUT] {};
+			\node (v5) at (5,2) [Vertex][IN] {};
+			\node (v6) at (6.2, 1.8) [Vertex][OUT] {};
+			\node (v7) at (5,0) [Vertex][IN] {};
+			\node (v8) at (6.2, 0.2) [Vertex][OUT] {};
+			
+			\draw [-] (v4) to (v5) [NM];
+			\draw [-] (v5) to (v6) [MC];
+			\draw [-] (v4) to (v7) [NM];
+			\draw [-] (v7) to (v8) [MC];
+			\draw [-] (v8) to (v6) [NM];
+		\end{tikzpicture}
+	\end{center}
+}
 
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Flower}
+	\begin{description}
 		\item[Flower] consists of a blossom and a stem which intersect only at the tip of the stem.
 	\end{description}
 	\begin{center}
@@ -1335,7 +1395,7 @@
 {
 	\frametitle{Flowered Tree}
 	\begin{description}
-		\item[Flowered tree] is a planted tree $J$ plus an edge $e$ of $G$ which joins a pair of outer vertices of $J$. The union of $e$ and the two paths which join its outer-vertex end-points to the root of of $J$ is a flower, $F$.
+		\item[Flowered tree] is a planted tree $J$ plus an edge $e$ of $G$ which joins a pair of even vertices of $J$. The union of $e$ and the two paths which join its even-vertex end-points to the root of of $J$ is a flower, $F$.
 	\end{description}
 
 	\begin{center}
@@ -1384,6 +1444,9 @@
 			\draw [-] (v12) to (v15) [NM];
 			\draw [-] (v15) to (v16) [MC];
 			\draw [-] (v6) to [in=0, out=0](v8) [DS];
+			\draw (v0) -- (v1) -- (v2) -- (v3) -- (v4) -- (v5) -- (v6) [line width=10pt, blue, opacity=0.3];
+			\draw (v4) -- (v7) -- (v8) [line width=10pt, blue, opacity=0.3];
+			\draw [-] (v6) to [in=0, out=0](v8) [line width=10pt, green, opacity=0.3];
 		\end{tikzpicture}
 	\end{center}
 }
