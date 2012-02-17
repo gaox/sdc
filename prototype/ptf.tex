@@ -1661,7 +1661,10 @@
 %---------------------slide--------------------%
 \frame
 {
-	\frametitle{Finding augmenting path}
+	\frametitle{Correctness of the algorithm}
+	\begin{block}{Theorem}
+		$M$ is a maximum size matching in $G$ if and only if $M/B$ is maximum size matching in $G/B$.
+	\end{block}
 	\begin{center}
 		\begin{tikzpicture}
 			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
@@ -1703,527 +1706,10 @@
 %---------------------slide--------------------%
 \frame
 {
-	\frametitle{Finding augmenting path}
-	\begin{center}
-		\begin{tikzpicture}
-			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
-			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
-			\tikzstyle{OUT}		= [fill = white]
-			\tikzstyle{IN}		= [fill = black]
-			\tikzstyle{Exposed}	= [dashed, OUT]
-			\tikzstyle{MC}		= [very thick, red]
-			\tikzstyle{NM}		= [gray]
-			
-			\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
-			\node (v1) at (1,1) [Vertex][IN] {};
-			\node (v2) at (2,1) [Vertex][OUT] {};
-			\node (v3) at (3,1) [Vertex][IN] {};
-			\node (v4) at (4,1) [Vertex][OUT] {};
-			\node (v5) at (5,2) [Vertex][IN] {};
-			\node (v6) at (6.2, 1.8) [Vertex][OUT] {};
-			\node (v7) at (5,0) [Vertex][IN] {};
-			\node (v8) at (6.2, 0.2) [Vertex][OUT] {};
-
-			\node (v9) at (5.5, 2.8) [Vertex][OUT][Exposed] {};
-			
-			\draw [-] (v0) to (v1) [NM];
-			\draw [-] (v1) to (v2) [MC];
-			\draw [-] (v2) to (v3) [NM];
-			\draw [-] (v3) to (v4) [MC];
-			\draw [-] (v4) to (v5) [NM];
-			\draw [-] (v5) to (v6) [MC];
-			\draw [-] (v4) to (v7) [NM];
-			\draw [-] (v7) to (v8) [MC];
-			\draw [-] (v8) to (v6) [NM];
-
-			\draw [-] (v5) to (v9) [NM];
-			\draw [-] (v8) to (7.2, -.8) [NM];
-		\end{tikzpicture}
-	\end{center}
-	A exposed vertex is a planted tree.
-	\begin{center}
-		\begin{tikzpicture}
-			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
-			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
-			\tikzstyle{OUT}		= [fill = white]
-			\tikzstyle{IN}		= [fill = black]
-			\tikzstyle{Exposed}	= [dashed, OUT]
-			\tikzstyle{MC}		= [very thick, red]
-			\tikzstyle{NM}		= [gray]
-			
-			\node (v0) at (0,1) [Vertex][OUT][Exposed][] {}; 
-		\end{tikzpicture}
-	\end{center}
-}
-
-%---------------------slide--------------------%
-\frame
-{
-	\frametitle{Finding augmenting path}
-	\begin{center}
-		\begin{tikzpicture}
-			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
-			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
-			\tikzstyle{OUT}		= [fill = white]
-			\tikzstyle{IN}		= [fill = black]
-			\tikzstyle{Exposed}	= [dashed, OUT]
-			\tikzstyle{MC}		= [very thick, red]
-			\tikzstyle{NM}		= [gray]
-			
-			\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
-			\node (v1) at (1,1) [Vertex][IN] {};
-			\node (v2) at (2,1) [Vertex][OUT] {};
-			\node (v3) at (3,1) [Vertex][IN] {};
-			\node (v4) at (4,1) [Vertex][OUT] {};
-			\node (v5) at (5,2) [Vertex][IN] {};
-			\node (v6) at (6.2, 1.8) [Vertex][OUT] {};
-			\node (v7) at (5,0) [Vertex][IN] {};
-			\node (v8) at (6.2, 0.2) [Vertex][OUT] {};
-
-			\node (v9) at (5.5, 2.8) [Vertex][OUT][Exposed] {};
-			
-			\draw [-] (v0) to (v1) [NM];
-			\draw [-] (v1) to (v2) [MC];
-			\draw [-] (v2) to (v3) [NM];
-			\draw [-] (v3) to (v4) [MC];
-			\draw [-] (v4) to (v5) [NM];
-			\draw [-] (v5) to (v6) [MC];
-			\draw [-] (v4) to (v7) [NM];
-			\draw [-] (v7) to (v8) [MC];
-			\draw [-] (v8) to (v6) [NM];
-
-			\draw [-] (v5) to (v9) [NM];
-			\draw [-] (v8) to (7.2, -.8) [NM];
-		\end{tikzpicture}
-	\end{center}
-	Extend to a larger planted tree
-	\begin{center}
-		\begin{tikzpicture}
-			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
-			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
-			\tikzstyle{OUT}		= [fill = white]
-			\tikzstyle{IN}		= [fill = black]
-			\tikzstyle{Exposed}	= [dashed, OUT]
-			\tikzstyle{MC}		= [very thick, red]
-			\tikzstyle{NM}		= [gray]
-			
-			\node (v0) at (0,1) [Vertex][OUT][Exposed][] {};
-			\node (v1) at (1,1) [Vertex][IN] {};
-			\node (v2) at (2,1) [Vertex][OUT] {};
-			
-			\draw [-] (v0) to (v1) [NM];
-			\draw [-] (v1) to (v2) [MC];
-		\end{tikzpicture}
-	\end{center}
-}
-
-%---------------------slide--------------------%
-\frame
-{
-	\frametitle{Finding augmenting path}
-	\begin{center}
-		\begin{tikzpicture}
-			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
-			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
-			\tikzstyle{OUT}		= [fill = white]
-			\tikzstyle{IN}		= [fill = black]
-			\tikzstyle{Exposed}	= [dashed, OUT]
-			\tikzstyle{MC}		= [very thick, red]
-			\tikzstyle{NM}		= [gray]
-			
-			\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
-			\node (v1) at (1,1) [Vertex][IN] {};
-			\node (v2) at (2,1) [Vertex][OUT] {};
-			\node (v3) at (3,1) [Vertex][IN] {};
-			\node (v4) at (4,1) [Vertex][OUT] {};
-			\node (v5) at (5,2) [Vertex][IN] {};
-			\node (v6) at (6.2, 1.8) [Vertex][OUT] {};
-			\node (v7) at (5,0) [Vertex][IN] {};
-			\node (v8) at (6.2, 0.2) [Vertex][OUT] {};
-
-			\node (v9) at (5.5, 2.8) [Vertex][OUT][Exposed] {};
-			
-			\draw [-] (v0) to (v1) [NM];
-			\draw [-] (v1) to (v2) [MC];
-			\draw [-] (v2) to (v3) [NM];
-			\draw [-] (v3) to (v4) [MC];
-			\draw [-] (v4) to (v5) [NM];
-			\draw [-] (v5) to (v6) [MC];
-			\draw [-] (v4) to (v7) [NM];
-			\draw [-] (v7) to (v8) [MC];
-			\draw [-] (v8) to (v6) [NM];
-
-			\draw [-] (v5) to (v9) [NM];
-			\draw [-] (v8) to (7.2, -.8) [NM];
-		\end{tikzpicture}
-	\end{center}
-	Extend to a larger planted tree..
-	\begin{center}
-		\begin{tikzpicture}
-			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
-			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
-			\tikzstyle{OUT}		= [fill = white]
-			\tikzstyle{IN}		= [fill = black]
-			\tikzstyle{Exposed}	= [dashed, OUT]
-			\tikzstyle{MC}		= [very thick, red]
-			\tikzstyle{NM}		= [gray]
-			
-			\node (v0) at (0,1) [Vertex][OUT][Exposed][] {};
-			\node (v1) at (1,1) [Vertex][IN] {};
-			\node (v2) at (2,1) [Vertex][OUT] {};
-			\node (v3) at (3,1) [Vertex][IN] {};
-			\node (v4) at (4,1) [Vertex][OUT] {};
-			
-			\draw [-] (v0) to (v1) [NM];
-			\draw [-] (v1) to (v2) [MC];
-			\draw [-] (v2) to (v3) [NM];
-			\draw [-] (v3) to (v4) [MC];
-		\end{tikzpicture}
-	\end{center}
-}
-
-%---------------------slide--------------------%
-\frame
-{
-	\frametitle{Finding augmenting path}
-	\begin{center}
-		\begin{tikzpicture}
-			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
-			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
-			\tikzstyle{OUT}		= [fill = white]
-			\tikzstyle{IN}		= [fill = black]
-			\tikzstyle{Exposed}	= [dashed, OUT]
-			\tikzstyle{MC}		= [very thick, red]
-			\tikzstyle{NM}		= [gray]
-			
-			\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
-			\node (v1) at (1,1) [Vertex][IN] {};
-			\node (v2) at (2,1) [Vertex][OUT] {};
-			\node (v3) at (3,1) [Vertex][IN] {};
-			\node (v4) at (4,1) [Vertex][OUT] {};
-			\node (v5) at (5,2) [Vertex][IN] {};
-			\node (v6) at (6.2, 1.8) [Vertex][OUT] {};
-			\node (v7) at (5,0) [Vertex][IN] {};
-			\node (v8) at (6.2, 0.2) [Vertex][OUT] {};
-
-			\node (v9) at (5.5, 2.8) [Vertex][OUT][Exposed] {};
-			
-			\draw [-] (v0) to (v1) [NM];
-			\draw [-] (v1) to (v2) [MC];
-			\draw [-] (v2) to (v3) [NM];
-			\draw [-] (v3) to (v4) [MC];
-			\draw [-] (v4) to (v5) [NM];
-			\draw [-] (v5) to (v6) [MC];
-			\draw [-] (v4) to (v7) [NM];
-			\draw [-] (v7) to (v8) [MC];
-			\draw [-] (v8) to (v6) [NM];
-
-			\draw [-] (v5) to (v9) [NM];
-			\draw [-] (v8) to (7.2, -.8) [NM];
-		\end{tikzpicture}
-	\end{center}
-	Extend to a larger planted tree....
-	\begin{center}
-		\begin{tikzpicture}
-			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
-			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
-			\tikzstyle{OUT}		= [fill = white]
-			\tikzstyle{IN}		= [fill = black]
-			\tikzstyle{Exposed}	= [dashed, OUT]
-			\tikzstyle{MC}		= [very thick, red]
-			\tikzstyle{NM}		= [gray]
-			
-			\node (v0) at (0,1) [Vertex][OUT][Exposed][] {};
-			\node (v1) at (1,1) [Vertex][IN] {};
-			\node (v2) at (2,1) [Vertex][OUT] {};
-			\node (v3) at (3,1) [Vertex][IN] {};
-			\node (v4) at (4,1) [Vertex][OUT] {};
-			\node (v5) at (5,2) [Vertex][IN] {};
-			\node (v6) at (6.2, 1.8) [Vertex][OUT] {};
-			\node (v7) at (5,0) [Vertex][IN] {};
-			\node (v8) at (6.2, 0.2) [Vertex][OUT] {};
-			
-			\draw [-] (v0) to (v1) [NM];
-			\draw [-] (v1) to (v2) [MC];
-			\draw [-] (v2) to (v3) [NM];
-			\draw [-] (v3) to (v4) [MC];
-			\draw [-] (v4) to (v5) [NM];
-			\draw [-] (v5) to (v6) [MC];
-			\draw [-] (v4) to (v7) [NM];
-			\draw [-] (v7) to (v8) [MC];
-		\end{tikzpicture}
-	\end{center}
-}
-
-%---------------------slide--------------------%
-\frame
-{
-	\frametitle{Finding augmenting path}
-	\begin{center}
-		\begin{tikzpicture}
-			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
-			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
-			\tikzstyle{OUT}		= [fill = white]
-			\tikzstyle{IN}		= [fill = black]
-			\tikzstyle{Exposed}	= [dashed, OUT]
-			\tikzstyle{MC}		= [very thick, red]
-			\tikzstyle{NM}		= [gray]
-			
-			\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
-			\node (v1) at (1,1) [Vertex][IN] {};
-			\node (v2) at (2,1) [Vertex][OUT] {};
-			\node (v3) at (3,1) [Vertex][IN] {};
-			\node (v4) at (4,1) [Vertex][OUT] {};
-			\node (v5) at (5,2) [Vertex][IN] {};
-			\node (v6) at (6.2, 1.8) [Vertex][OUT] {};
-			\node (v7) at (5,0) [Vertex][IN] {};
-			\node (v8) at (6.2, 0.2) [Vertex][OUT] {};
-
-			\node (v9) at (5.5, 2.8) [Vertex][OUT][Exposed] {};
-			
-			\draw [-] (v0) to (v1) [NM];
-			\draw [-] (v1) to (v2) [MC];
-			\draw [-] (v2) to (v3) [NM];
-			\draw [-] (v3) to (v4) [MC];
-			\draw [-] (v4) to (v5) [NM];
-			\draw [-] (v5) to (v6) [MC];
-			\draw [-] (v4) to (v7) [NM];
-			\draw [-] (v7) to (v8) [MC];
-			\draw [-] (v8) to (v6) [NM];
-
-			\draw [-] (v5) to (v9) [NM];
-			\draw [-] (v8) to (7.2, -.8) [NM];
-		\end{tikzpicture}
-	\end{center}
-	Find a blossom!
-	\begin{center}
-		\begin{tikzpicture}
-			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
-			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
-			\tikzstyle{OUT}		= [fill = white]
-			\tikzstyle{IN}		= [fill = black]
-			\tikzstyle{Exposed}	= [dashed, OUT]
-			\tikzstyle{MC}		= [very thick, red]
-			\tikzstyle{NM}		= [gray]
-			
-			\node (v0) at (0,1) [Vertex][OUT][Exposed][] {};
-			\node (v1) at (1,1) [Vertex][IN] {};
-			\node (v2) at (2,1) [Vertex][OUT] {};
-			\node (v3) at (3,1) [Vertex][IN] {};
-			\node (v4) at (4,1) [Vertex][OUT] {};
-			\node (v5) at (5,2) [Vertex][IN] {};
-			\node (v6) at (6.2, 1.8) [Vertex][OUT] {};
-			\node (v7) at (5,0) [Vertex][IN] {};
-			\node (v8) at (6.2, 0.2) [Vertex][OUT] {};
-			
-			\draw [-] (v0) to (v1) [NM];
-			\draw [-] (v1) to (v2) [MC];
-			\draw [-] (v2) to (v3) [NM];
-			\draw [-] (v3) to (v4) [MC];
-			\draw [-] (v4) to (v5) [NM];
-			\draw [-] (v5) to (v6) [MC];
-			\draw [-] (v4) to (v7) [NM];
-			\draw [-] (v7) to (v8) [MC];
-			\draw [-] (v8) to (v6) [NM];
-			
-			\draw [-] (v8) to (7.2, -.8) [NM];
-		\end{tikzpicture}
-	\end{center}
-}
-
-%---------------------slide--------------------%
-\frame
-{
-	\frametitle{Finding augmenting path}
-	\begin{center}
-		\begin{tikzpicture}
-			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
-			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
-			\tikzstyle{OUT}		= [fill = white]
-			\tikzstyle{IN}		= [fill = black]
-			\tikzstyle{Exposed}	= [dashed, OUT]
-			\tikzstyle{MC}		= [very thick, red]
-			\tikzstyle{NM}		= [gray]
-			
-			\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
-			\node (v1) at (1,1) [Vertex][IN] {};
-			\node (v2) at (2,1) [Vertex][OUT] {};
-			\node (v3) at (3,1) [Vertex][IN] {};
-			\node (v4) at (4,1) [Vertex][OUT] {};
-			\node (v5) at (5,2) [Vertex][IN] {};
-			\node (v6) at (6.2, 1.8) [Vertex][OUT] {};
-			\node (v7) at (5,0) [Vertex][IN] {};
-			\node (v8) at (6.2, 0.2) [Vertex][OUT] {};
-
-			\node (v9) at (5.5, 2.8) [Vertex][OUT][Exposed] {};
-			
-			\draw [-] (v0) to (v1) [NM];
-			\draw [-] (v1) to (v2) [MC];
-			\draw [-] (v2) to (v3) [NM];
-			\draw [-] (v3) to (v4) [MC];
-			\draw [-] (v4) to (v5) [NM];
-			\draw [-] (v5) to (v6) [MC];
-			\draw [-] (v4) to (v7) [NM];
-			\draw [-] (v7) to (v8) [MC];
-			\draw [-] (v8) to (v6) [NM];
-
-			\draw [-] (v5) to (v9) [NM];
-			\draw [-] (v8) to (7.2, -.8) [NM];
-		\end{tikzpicture}
-	\end{center}
-	Shrink it!
-	\begin{center}
-		\begin{tikzpicture}
-			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
-			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
-			\tikzstyle{OUT}		= [fill = white]
-			\tikzstyle{IN}		= [fill = black]
-			\tikzstyle{Exposed}	= [dashed, OUT]
-			\tikzstyle{MC}		= [very thick, red]
-			\tikzstyle{NM}		= [gray]
-			
-			\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
-			\node (v1) at (1,1) [Vertex][IN] {};
-			\node (v2) at (2,1) [Vertex][OUT] {};
-			\node (v3) at (3,1) [Vertex][IN] {};
-			\node (v4) at (4,1) [Flower][OUT] {};
-			\pgfplothandlerlineto
-			\pgfplotfunction{\x}{0, 3, ..., 540}{
-				\pgfpointxy     
-				{-0.2 * cos(\x) * sin(5 / 3 * \x) + 4}
-				{-0.2 * sin(\x) * sin(5 / 3 * \x) + 1}
-			}
-			\pgfusepath{stroke}
-				
-			\draw [-] (v0) to (v1) [NM];
-			\draw [-] (v1) to (v2) [MC];
-			\draw [-] (v2) to (v3) [NM];
-			\draw [-] (v3) to (v4) [MC];
-	
-			\draw [-] (v4) to (5, 0) [NM];
-		\end{tikzpicture}
-	\end{center}
-}
-
-%---------------------slide--------------------%
-\frame
-{
-	\frametitle{Finding augmenting path}
-	\begin{center}
-		\begin{tikzpicture}
-			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
-			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
-			\tikzstyle{OUT}		= [fill = white]
-			\tikzstyle{IN}		= [fill = black]
-			\tikzstyle{Exposed}	= [dashed, OUT]
-			\tikzstyle{MC}		= [very thick, red]
-			\tikzstyle{NM}		= [gray]
-			
-			\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
-			\node (v1) at (1,1) [Vertex][IN] {};
-			\node (v2) at (2,1) [Vertex][OUT] {};
-			\node (v3) at (3,1) [Vertex][IN] {};
-			\node (v4) at (4,1) [Vertex][OUT] {};
-			\node (v5) at (5,2) [Vertex][IN] {};
-			\node (v6) at (6.2, 1.8) [Vertex][OUT] {};
-			\node (v7) at (5,0) [Vertex][IN] {};
-			\node (v8) at (6.2, 0.2) [Vertex][OUT] {};
-
-			\node (v9) at (5.5, 2.8) [Vertex][OUT][Exposed] {};
-			
-			\draw [-] (v0) to (v1) [NM];
-			\draw [-] (v1) to (v2) [MC];
-			\draw [-] (v2) to (v3) [NM];
-			\draw [-] (v3) to (v4) [MC];
-			\draw [-] (v4) to (v5) [NM];
-			\draw [-] (v5) to (v6) [MC];
-			\draw [-] (v4) to (v7) [NM];
-			\draw [-] (v7) to (v8) [MC];
-			\draw [-] (v8) to (v6) [NM];
-
-			\draw [-] (v5) to (v9) [NM];
-			\draw [-] (v8) to (7.2, -.8) [NM];
-		\end{tikzpicture}
-	\end{center}
-	Extend to an augmenting tree!
-	\begin{center}
-		\begin{tikzpicture}
-			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
-			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
-			\tikzstyle{OUT}		= [fill = white]
-			\tikzstyle{IN}		= [fill = black]
-			\tikzstyle{Exposed}	= [dashed, OUT]
-			\tikzstyle{MC}		= [very thick, red]
-			\tikzstyle{NM}		= [gray]
-			
-			\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
-			\node (v1) at (1,1) [Vertex][IN] {};
-			\node (v2) at (2,1) [Vertex][OUT] {};
-			\node (v3) at (3,1) [Vertex][IN] {};
-			\node (v4) at (4,1) [Flower][OUT] {};
-			
-			\node (v5) at (5, 2) [Vertex][OUT][Exposed] {};
-			
-			\pgfplothandlerlineto
-			\pgfplotfunction{\x}{0, 3, ..., 540}{
-				\pgfpointxy     
-				{-0.2 * cos(\x) * sin(5 / 3 * \x) + 4}
-				{-0.2 * sin(\x) * sin(5 / 3 * \x) + 1}
-			}
-			\pgfusepath{stroke}
-				
-			\draw [-] (v0) to (v1) [NM];
-			\draw [-] (v1) to (v2) [MC];
-			\draw [-] (v2) to (v3) [NM];
-			\draw [-] (v3) to (v4) [MC];
-	
-			\draw [-] (v4) to (v5) [NM];
-			\draw [-] (v4) to (5, 0) [NM];
-		\end{tikzpicture}
-	\end{center}
-}
-
-%---------------------slide--------------------%
-\frame
-{
-	\frametitle{Finding augmenting path}
-	\begin{center}
-		\begin{tikzpicture}
-			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
-			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
-			\tikzstyle{OUT}		= [fill = white]
-			\tikzstyle{IN}		= [fill = black]
-			\tikzstyle{Exposed}	= [dashed, OUT]
-			\tikzstyle{MC}		= [very thick, red]
-			\tikzstyle{NM}		= [gray]
-			
-			\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
-			\node (v1) at (1,1) [Vertex][IN] {};
-			\node (v2) at (2,1) [Vertex][OUT] {};
-			\node (v3) at (3,1) [Vertex][IN] {};
-			\node (v4) at (4,1) [Vertex][OUT] {};
-			\node (v5) at (5,2) [Vertex][IN] {};
-			\node (v6) at (6.2, 1.8) [Vertex][OUT] {};
-			\node (v7) at (5,0) [Vertex][IN] {};
-			\node (v8) at (6.2, 0.2) [Vertex][OUT] {};
-
-			\node (v9) at (5.5, 2.8) [Vertex][OUT][Exposed] {};
-			
-			\draw [-] (v0) to (v1) [NM];
-			\draw [-] (v1) to (v2) [MC];
-			\draw [-] (v2) to (v3) [NM];
-			\draw [-] (v3) to (v4) [MC];
-			\draw [-] (v4) to (v5) [NM];
-			\draw [-] (v5) to (v6) [MC];
-			\draw [-] (v4) to (v7) [NM];
-			\draw [-] (v7) to (v8) [MC];
-			\draw [-] (v8) to (v6) [NM];
-
-			\draw [-] (v5) to (v9) [NM];
-			\draw [-] (v8) to (7.2, -.8) [NM];
-		\end{tikzpicture}
-	\end{center}
-	Find the augmenting path.
+	\frametitle{Correctness of the algorithm}
+	\begin{block}{Theorem}
+		$M$ is a maximum size matching in $G$ if and only if $M/B$ is maximum size matching in $G/B$.
+	\end{block}
 	\begin{center}
 		\begin{tikzpicture}
 			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
@@ -2262,22 +1748,45 @@
 			\draw [-] (v8) to (7.2, -.8) [NM];
 		\end{tikzpicture}
 	\end{center}
+	
+	\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
+			\tikzstyle{OUT}		= [fill = white]
+			\tikzstyle{IN}		= [fill = black]
+			\tikzstyle{Exposed}	= [dashed, OUT]
+			\tikzstyle{MC}		= [very thick, red]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
+			\node (v1) at (1,1) [Vertex][IN] {};
+			\node (v2) at (2,1) [Vertex][OUT] {};
+			\node (v3) at (3,1) [Vertex][IN] {};
+			\node (v4) at (4,1) [Flower][OUT] {};
+			
+			\node (v5) at (5, 2) [Vertex][OUT][Exposed] {};
+			
+			\pgfplothandlerlineto
+			\pgfplotfunction{\x}{0, 3, ..., 540}{
+				\pgfpointxy     
+				{-0.2 * cos(\x) * sin(5 / 3 * \x) + 4}
+				{-0.2 * sin(\x) * sin(5 / 3 * \x) + 1}
+			}
+			\pgfusepath{stroke}
+				
+			\draw [-] (v0) to (v1) [NM];
+			\draw [-] (v1) to (v2) [MC];
+			\draw [-] (v2) to (v3) [NM];
+			\draw [-] (v3) to (v4) [MC];
+	
+			\draw [-] (v4) to (v5) [NM];
+			\draw [-] (v4) to (5, 0) [NM];
+			
+			\draw (v0) -- (v1) -- (v2) -- (v3) -- (v4) -- (v5) [line width=10pt, red, opacity=0.3];
+		\end{tikzpicture}
+	\end{center}
 }
-
-%%---------------------slide--------------------%
-%\frame
-%{
-%	\frametitle{Matching}
-%	
-%	\begin{description}
-%		\item[Matching in a graph] is a set of edges, no two of which meet at a common vertex.
-%		\item[Maximum matching] is a matching of maximum cardinality.
-%	\end{description}
-%	\begin{figure}[htb]
-%	\centering
-%	\includegraphics[width=0.8\textwidth]{figures/matching.png}
-%	\end{figure}
-%}
 
 %---------------------slide--------------------%
 \frame
