@@ -2600,11 +2600,162 @@
 		
 		if such extrema exist.
 	\end{block}
-	
+}
+
+%---------------------slide--------------------%
+\section{Matching-duality theorem}
+\frame
+{
+	\frametitle{Matching-duality theorem}	
 	\begin{block}{K\"{o}nig theorem}
 		In a bipartite graph, the maximum size of a matching is equal to the minimum size of a vertex cover.
 	\end{block}
 
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 1.0) [Vertex] {$1$};
+		\node (v2) at (1.0, 1.0) [Vertex] {$2$};
+		\node (v3) at (0.0, 0.0) [Vertex] {$3$};
+		\node (v4) at (1.0, 0.0) [Vertex] {$4$};
+		
+		\draw [-] (v1) to (v3) [NM];
+		\draw [-] (v2) to (v3) [NM];
+		\draw [-] (v2) to (v4) [NM];
+	\end{tikzpicture}
+	\end{center}
+	
+	\begin{center}
+	\begin{figure}[h]
+		\hfill
+		\centering
+		\begin{minipage}[c]{.45\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{OUT}		= [fill = white]
+			\tikzstyle{IN}		= [fill = black]
+			\tikzstyle{Exposed}	= [dashed, OUT]
+			\tikzstyle{MC}		= [very thick, blue]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (v1) at (0.0, 1.0) [Vertex] {$1$};
+			\node (v2) at (1.0, 1.0) [Vertex] {$2$};
+			\node (v3) at (0.0, 0.0) [Vertex] {$3$};
+			\node (v4) at (1.0, 0.0) [Vertex] {$4$};
+			
+			\draw [-] (v1) to (v3) [MC];
+			\draw [-] (v2) to (v3) [NM];
+			\draw [-] (v2) to (v4) [MC];
+		\end{tikzpicture}
+		\end{minipage}
+		\hfill
+		\centering
+		\begin{minipage}[c]{.45\textwidth}
+		\centering
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{OUT}		= [fill = white]
+			\tikzstyle{IN}		= [fill = red]
+			\tikzstyle{Exposed}	= [dashed, OUT]
+			\tikzstyle{MC}		= [very thick, blue]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (v1) at (0.0, 1.0) [Vertex][IN] {$1$};
+			\node (v2) at (1.0, 1.0) [Vertex][IN] {$2$};
+			\node (v3) at (0.0, 0.0) [Vertex] {$3$};
+			\node (v4) at (1.0, 0.0) [Vertex] {$4$};
+			
+			\draw [-] (v1) to (v3) [NM];
+			\draw [-] (v2) to (v3) [NM];
+			\draw [-] (v2) to (v4) [NM];
+		\end{tikzpicture}
+		\end{minipage}
+		\hfill
+	\end{figure}
+	\end{center}
+}
+
+%---------------------slide--------------------%
+\section{Matching-duality theorem}
+\frame
+{
+	\frametitle{Matching-duality theorem}
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 1.0) [Vertex] {$1$};
+		\node (v2) at (1.0, 1.0) [Vertex] {$2$};
+		\node (v3) at (0.0, 0.0) [Vertex] {$3$};
+		\node (v4) at (1.0, 0.0) [Vertex] {$4$};
+		
+		\draw [-] (v1) to (v3) [NM];
+		\draw [-] (v2) to (v3) [NM];
+		\draw [-] (v2) to (v4) [NM];
+	\end{tikzpicture}
+	\end{center}
+	
+	\begin{center}
+	\begin{figure}[h]
+		\hfill
+		\centering
+		\begin{minipage}[c]{.45\textwidth}
+		\centering
+		\begin{block}{Maximum matching}
+		maximize
+		\begin{equation*}
+		x_{13} + x_{23} + x_{24}
+		\end{equation*}
+		subject to
+		\begin{equation*}
+		\begin{array}{ccccccc}
+	  	x_{13} &   &        &   &        & \leq & 1\\
+		       &   & x_{23} & + & x_{24} & \leq & 1\\
+		x_{13} & + & x_{23} &   &        & \leq & 1\\
+		       &   &        &   & x_{24} & \leq & 1
+	  	\end{array}
+	  	\end{equation*}
+		\end{block}
+		\end{minipage}
+		\hfill
+		\centering
+		\begin{minipage}[c]{.45\textwidth}
+		\centering
+		\begin{block}{Minimum cover}
+		minimize
+		\begin{equation*}
+		x_{1} + x_{2} + x_{3} + x_{4}
+		\end{equation*}
+		subject to
+		\begin{equation*}
+		\begin{array}{cccccccc}
+	  	x_{1}+ &        & x_{3} &       & \geq & 1\\
+		       & x_{2}+ & x_{3} &       & \geq & 1\\
+		       & x_{2}+ &       & x_{4} & \geq & 1\\
+		       &        &       &       &      &  \\
+	  	\end{array}
+	  	\end{equation*}
+		\end{block}
+		\end{minipage}
+		\hfill
+	\end{figure}
+	\end{center}
 }
 
 %---------------------slide--------------------%
