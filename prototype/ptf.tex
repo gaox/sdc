@@ -2577,6 +2577,17 @@
 	}
 }
 
+\frame
+{
+	\frametitle{Running time}
+	\begin{itemize}
+		\item At most $O(n)$ augmentations.
+		\item Each augmentation will shrink at most $O(n)$ blossoms.
+		\item Constructing the alternating tree takes at most $O(m)$.
+		\item $\therefore O(n^{2}m)$
+	\end{itemize}
+}
+
 %---------------------slide--------------------%
 \section{Matching-duality theorem}
 \frame
@@ -2665,7 +2676,7 @@
 			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
 			\tikzstyle{Vertex} 	= [circle, draw, solid, fill=white, minimum size=4mm, inner sep=0pt]
 			\tikzstyle{OUT}		= [fill = white]
-			\tikzstyle{IN}		= [fill = red]
+			\tikzstyle{IN}		= [fill = red, opacity = 0.5]
 			\tikzstyle{Exposed}	= [dashed, OUT]
 			\tikzstyle{MC}		= [very thick, blue]
 			\tikzstyle{NM}		= [gray]
@@ -2807,37 +2818,271 @@ incident with a vertex in $S$ or lies within an odd set $O_{j}$.
 	\begin{itemize}
 	{
 		\item Proof:
+
+		\bigskip
+				
+		For a pertect matching $M$ with no exposed vertices
 		
 		\bigskip
 		
-		For a pertect matching $M$ with no exposed vertices, the odd-set cover consists of two sets, one set  containing one of the vertices, the other containing all the other vertices.
-		
-		\bigskip
-		
-		For a graph which has a matching with one exposed vertices, the odd-set cover may be taken as one set containing all the vertices of the graph.
-		
-		\bigskip
-		
-		The general case can be proven by induction.
+		\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{OUT}		= [fill = green, opacity = 0.5]
+			\tikzstyle{IN}		= [fill = red, opacity = 0.5]
+			\tikzstyle{Exposed}	= [dashed, OUT]
+			\tikzstyle{MC}		= [very thick, blue]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (v1) at (0.0, 1.0) [Vertex][IN] {$1$};
+			\node (v2) at (1.0, 1.0) [Vertex][OUT] {$2$};
+			\node (v3) at (2.0, 1.0) [Vertex][OUT] {$3$};
+			\node (v4) at (0.0, 0.0) [Vertex][OUT] {$4$};
+			\node (v5) at (1.0, 0.0) [Vertex][OUT] {$5$};
+			\node (v6) at (2.0, 0.0) [Vertex][OUT] {$6$};
+			
+			\draw [-] (v1) to (v4) [MC];
+			\draw [-] (v2) to (v5) [MC];
+			\draw [-] (v3) to (v6) [MC];
+		\end{tikzpicture}
+		\end{center}
 		
 	}
 	\end{itemize}
 }
 
-%%---------------------slide--------------------%
-%\frame
-%{
-%	\frametitle{Matching-duality theorem}
-%	
-%	\begin{itemize}
-%	{
-%		\item Proof:
-%		
-%		\bigskip
-%		
-%		For a general case, we apply the algorithm to $(G, M)$, where $M$ is maximum, using some exposed vertex as the root, we obtain a graph $G'$ containing a maximally matched Hungarian tree $J$, a number of whose outer vertices are pseudo. Let $S_{J}$ consist of all odd sets of the following two types: sets each consisting of one inner vertex in $J$, and sets each consisting of the vertices in the complete expansion of one pseudovertex of $J$. The number of edges of $M$ which a member of $S_{J}$ covers is equal to the capacity of the member. An edge of $G$ is covered by a member of $S_{J}$ if and only if it is not in $G' - J$. Matching $M \sup (G' - J)$ is a maximum matching of $G' - J$ with one less exposed vertex, 
-%	}
-%	\end{itemize}
-%}
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Matching-duality theorem}
+	
+	\begin{itemize}
+	{
+		\item Proof:
+
+		\bigskip
+				
+		For a graph which has a matching with one exposed vertices
+		
+		\bigskip
+		
+		\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{OUT}		= [fill = green, opacity = 0.5]
+			\tikzstyle{IN}		= [fill = red, opacity = 0.5]
+			\tikzstyle{Exposed}	= [dashed, OUT]
+			\tikzstyle{MC}		= [very thick, blue]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (v1) at (0.0, 1.0) [Vertex][Exposed][IN] {$1$};
+			\node (v2) at (1.0, 1.0) [Vertex][IN] {$2$};
+			\node (v3) at (2.0, 1.0) [Vertex][IN] {$3$};
+			\node (v5) at (1.0, 0.0) [Vertex][IN] {$5$};
+			\node (v6) at (2.0, 0.0) [Vertex][IN] {$6$};
+			
+			\draw [-] (v2) to (v5) [MC];
+			\draw [-] (v3) to (v6) [MC];
+		\end{tikzpicture}
+		\end{center}
+		
+	}
+	\end{itemize}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Matching-duality theorem}
+	
+	\begin{itemize}
+	{
+		\item Proof:
+
+		\bigskip
+				
+		For a graph with more than one exposed vertex
+		
+		\bigskip
+		
+		\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{OUT}		= [fill = green, opacity = 0.5]
+			\tikzstyle{IN}		= [fill = red, opacity = 0.5]
+			\tikzstyle{Exposed}	= [dashed]
+			\tikzstyle{MC}		= [very thick, red]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (v1) at (0.0, 0.5) [Vertex] {$1$};
+			\node (v2) at (1.0, 0.0) [Vertex] {$2$};
+			\node (v3) at (1.0, 1.0) [Vertex] {$3$};
+			\node (v4) at (2.0, 0.0) [Vertex][Exposed] {$4$};
+			\node (v5) at (2.0, 1.0) [Vertex][Exposed] {$5$};
+			\node (v6) at (0.0, 2.0) [Vertex] {$6$};
+			\node (v7) at (-1.0, 2.0) [Vertex] {$7$};
+			\node (v8) at (-1.0, 1.0) [Vertex] {$8$};
+			\node (v9) at (2.0, 2.0) [Vertex] {$9$};
+			\node (v10) at (1.0, 2.0) [Vertex] {$10$};
+			
+			\draw [-] (v1) to (v2) [MC];
+			\draw [-] (v1) to (v3) [NM];
+			\draw [-] (v2) to (v3) [NM];
+			\draw [-] (v3) to (v4) [NM];
+			\draw [-] (v3) to (v5) [NM];
+			\draw [-] (v3) to (v6) [MC];
+			\draw [-] (v6) to (v7) [NM];
+			\draw [-] (v6) to (v8) [NM];
+			\draw [-] (v7) to (v8) [MC];
+			\draw [-] (v5) to (v9) [NM];
+			\draw [-] (v5) to (v10) [NM];
+			\draw [-] (v9) to (v10) [MC];
+		\end{tikzpicture}
+		\end{center}
+		
+	}
+	\end{itemize}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Matching-duality theorem}
+	
+	\begin{itemize}
+	{
+		\item Proof:
+		
+		\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{C1}		= [fill = green, opacity = 0.5]
+			\tikzstyle{C2}		= [fill = blue, opacity = 0.5]
+			\tikzstyle{Exposed}	= [dashed]
+			\tikzstyle{MC}		= [very thick, red]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (v1) at (0.0, 0.5) [Vertex] {$1$};
+			\node (v2) at (1.0, 0.0) [Vertex] {$2$};
+			\node (v3) at (1.0, 1.0) [Vertex][C1] {$3$};
+			\node (v4) at (2.0, 0.0) [Vertex][Exposed] {$4$};
+			\node (v5) at (2.0, 1.0) [Vertex][Exposed] {$5$};
+			\node (v6) at (0.0, 2.0) [Vertex][C2] {$6$};
+			\node (v7) at (-1.0, 2.0) [Vertex][C2] {$7$};
+			\node (v8) at (-1.0, 1.0) [Vertex][C2] {$8$};
+			\node (v9) at (2.0, 2.0) [Vertex] {$9$};
+			\node (v10) at (1.0, 2.0) [Vertex] {$10$};
+			
+			\draw [-] (v1) to (v2) [MC];
+			\draw [-] (v1) to (v3) [NM];
+			\draw [-] (v2) to (v3) [NM];
+			\draw [-] (v3) to (v4) [NM];
+			\draw [-] (v3) to (v5) [NM];
+			\draw [-] (v3) to (v6) [MC];
+			\draw [-] (v6) to (v7) [NM];
+			\draw [-] (v6) to (v8) [NM];
+			\draw [-] (v7) to (v8) [MC];
+			\draw [-] (v5) to (v9) [NM];
+			\draw [-] (v5) to (v10) [NM];
+			\draw [-] (v9) to (v10) [MC];
+			
+			\draw (v4) -- (v3) -- (v6) -- (v7) -- (v8) -- (v6) [line width=10pt, red, opacity=0.3];
+		\end{tikzpicture}
+		\end{center}		
+	}
+	\end{itemize}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Matching-duality theorem}
+	
+	\begin{itemize}
+	{
+		\item Proof:
+		
+		\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{C1}		= [fill = green, opacity = 0.5]
+			\tikzstyle{C2}		= [fill = blue, opacity = 0.5]
+			\tikzstyle{Exposed}	= [dashed]
+			\tikzstyle{MC}		= [very thick, red]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (v1) at (0.0, 0.5) [Vertex] {$1$};
+			\node (v2) at (1.0, 0.0) [Vertex] {$2$};
+			\node (v3) at (1.0, 1.0) [Vertex][C1] {$3$};
+			\node (v4) at (2.0, 0.0) [Vertex][Exposed] {$4$};
+			\node (v5) at (2.0, 1.0) [Vertex][Exposed] {$5$};
+			\node (v6) at (0.0, 2.0) [Vertex][C2] {$6$};
+			\node (v7) at (-1.0, 2.0) [Vertex][C2] {$7$};
+			\node (v8) at (-1.0, 1.0) [Vertex][C2] {$8$};
+			\node (v9) at (2.0, 2.0) [Vertex] {$9$};
+			\node (v10) at (1.0, 2.0) [Vertex] {$10$};
+			
+			\draw [-] (v1) to (v2) [MC];
+			\draw [-] (v1) to (v3) [NM];
+			\draw [-] (v2) to (v3) [NM];
+			\draw [-] (v3) to (v4) [NM];
+			\draw [-] (v3) to (v5) [NM];
+			\draw [-] (v3) to (v6) [MC];
+			\draw [-] (v6) to (v7) [NM];
+			\draw [-] (v6) to (v8) [NM];
+			\draw [-] (v7) to (v8) [MC];
+			\draw [-] (v5) to (v9) [NM];
+			\draw [-] (v5) to (v10) [NM];
+			\draw [-] (v9) to (v10) [MC];
+			
+			\draw (v4) -- (v3) -- (v6) -- (v7) -- (v8) -- (v6) [line width=10pt, red, opacity=0.3];
+		\end{tikzpicture}
+		\end{center}	
+		
+		\bigskip
+		
+		\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{C1}		= [fill = green, opacity = 0.5]
+			\tikzstyle{C2}		= [fill = blue, opacity = 0.5]
+			\tikzstyle{Exposed}	= [dashed]
+			\tikzstyle{MC}		= [very thick, red]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (v1) at (0.0, 0.5) [Vertex][C1] {$1$};
+			\node (v2) at (1.0, 0.0) [Vertex] {$2$};
+			\node (v3) at (1.0, 1.0) [Vertex] {$3$};
+			\node (v4) at (2.0, 0.0) [Vertex][Exposed] {$4$};
+			\node (v5) at (2.0, 1.0) [Vertex][Exposed][C2]  {$5$};
+			\node (v6) at (0.0, 2.0) [Vertex] {$6$};
+			\node (v7) at (-1.0, 2.0) [Vertex] {$7$};
+			\node (v8) at (-1.0, 1.0) [Vertex] {$8$};
+			\node (v9) at (2.0, 2.0) [Vertex][C2]  {$9$};
+			\node (v10) at (1.0, 2.0) [Vertex][C2]  {$10$};
+			
+			\draw [-] (v1) to (v2) [MC];
+			\draw [-] (v3) to (v4) [NM];
+			\draw [-] (v3) to (v6) [MC];
+			\draw [-] (v6) to (v7) [NM];
+			\draw [-] (v6) to (v8) [NM];
+			\draw [-] (v7) to (v8) [MC];
+			\draw [-] (v5) to (v9) [NM];
+			\draw [-] (v5) to (v10) [NM];
+			\draw [-] (v9) to (v10) [MC];
+			
+			\draw (v1) -- (v2) [line width=10pt, red, opacity=0.3];
+			\draw (v5) -- (v9) -- (v10) -- (v5) [line width=10pt, red, opacity=0.3];
+		\end{tikzpicture}
+		\end{center}
+	}
+	\end{itemize}
+}
 
 \end{document}
