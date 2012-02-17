@@ -1792,6 +1792,51 @@
 \frame
 {
 	\frametitle{Examples}
+	{
+	A graph $G=(V,E)$ and a matching $M$.
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][Exposed] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex] {$4$};
+		\node (v5) at (4.5, 3.5) [Vertex] {$5$};
+		\node (v6) at (3.0, 3.5) [Vertex] {$6$};
+		\node (v7) at (1.5, 3.5) [Vertex][Exposed] {$7$};
+		\node (v8) at (3.0, 2.0) [Vertex] {$8$};
+		\node (v9) at (4.5, 2.0) [Vertex] {$9$};
+		\node (v10) at (6.0, 3.5) [Vertex] {$10$};
+		
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v2) to (v7) [NM];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
+		\draw [-] (v5) to (v6) [NM];
+		\draw [-] (v5) to (v9) [NM];
+		\draw [-] (v5) to (v10) [NM];
+		\draw [-] (v6) to (v7) [NM];
+		\draw [-] (v6) to (v8) [MC];
+		\draw [-] (v8) to (v9) [NM];
+		\draw [-] (v9) to (v10) [MC];
+	\end{tikzpicture}
+	\end{center}
+	}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Examples}
 	{\scriptsize
 	A graph $G=(V,E)$ and a matching $M$.
 	
@@ -1831,7 +1876,7 @@
 	\end{tikzpicture}
 	\end{center}
 
-	Start a BFS from 1, encounter the odd cycle 5-10-9.
+	Start a BFS from 1. An exposed vertex is a planted tree.
 	
 	\begin{center}
 	\begin{tikzpicture}
@@ -1843,21 +1888,308 @@
 		\tikzstyle{MC}		= [very thick, blue]
 		\tikzstyle{NM}		= [gray]
 		
-		\node (v1) at (0.0, 5.0) [Vertex][Exposed][label=above:$o$] {$1$};
-		\node (v2) at (1.5, 5.0) [Vertex][label=above:$i$] {$2$};
-		\node (v3) at (3.0, 5.0) [Vertex][label=above:$o$] {$3$};
-		\node (v4) at (4.5, 5.0) [Vertex][label=above:$i$] {$4$};
-		\node (v5) at (6.0, 5.0) [Vertex][label=above:$o$] {$5$};
-		\node (v10) at (7.5, 5.0) [Vertex][label=above:$i$] {$10$};
-		\node (v9) at (8.0, 3.5) [Vertex][label=above:$o$] {$9$};
+		\node (v1) at (0.0, 5.0) [Vertex][Exposed][label=above:$even$] {$1$};
+	\end{tikzpicture}
+	\end{center}
+	}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Examples}
+	{\scriptsize
+	A graph $G=(V,E)$ and a matching $M$.
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][Exposed] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex] {$4$};
+		\node (v5) at (4.5, 3.5) [Vertex] {$5$};
+		\node (v6) at (3.0, 3.5) [Vertex] {$6$};
+		\node (v7) at (1.5, 3.5) [Vertex][Exposed] {$7$};
+		\node (v8) at (3.0, 2.0) [Vertex] {$8$};
+		\node (v9) at (4.5, 2.0) [Vertex] {$9$};
+		\node (v10) at (6.0, 3.5) [Vertex] {$10$};
+		
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v2) to (v7) [NM];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
+		\draw [-] (v5) to (v6) [NM];
+		\draw [-] (v5) to (v9) [NM];
+		\draw [-] (v5) to (v10) [NM];
+		\draw [-] (v6) to (v7) [NM];
+		\draw [-] (v6) to (v8) [MC];
+		\draw [-] (v8) to (v9) [NM];
+		\draw [-] (v9) to (v10) [MC];
+		
+		\draw (v1) -- (v2) -- (v3) [line width=10pt, green, opacity=0.3];
+	\end{tikzpicture}
+	\end{center}
+
+	If one vertex connected to the even vertex of the planted tree is in the matching, we can extend to a larger planted tree.
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][Exposed][label=above:$even$] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex][label=above:$odd$] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex][label=above:$even$] {$3$};
+		
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		
+		\draw (v1) -- (v2) -- (v3) [line width=10pt, green, opacity=0.3];
+	\end{tikzpicture}
+	\end{center}
+	}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Examples}
+	{\scriptsize
+	A graph $G=(V,E)$ and a matching $M$.
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][Exposed] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex] {$4$};
+		\node (v5) at (4.5, 3.5) [Vertex] {$5$};
+		\node (v6) at (3.0, 3.5) [Vertex] {$6$};
+		\node (v7) at (1.5, 3.5) [Vertex][Exposed] {$7$};
+		\node (v8) at (3.0, 2.0) [Vertex] {$8$};
+		\node (v9) at (4.5, 2.0) [Vertex] {$9$};
+		\node (v10) at (6.0, 3.5) [Vertex] {$10$};
+		
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v2) to (v7) [NM];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
+		\draw [-] (v5) to (v6) [NM];
+		\draw [-] (v5) to (v9) [NM];
+		\draw [-] (v5) to (v10) [NM];
+		\draw [-] (v6) to (v7) [NM];
+		\draw [-] (v6) to (v8) [MC];
+		\draw [-] (v8) to (v9) [NM];
+		\draw [-] (v9) to (v10) [MC];
+		
+		\draw (v3) -- (v4) -- (v5) [line width=10pt, green, opacity=0.3];
+	\end{tikzpicture}
+	\end{center}
+
+	Extend to a larger planted tree..
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][Exposed][label=above:$even$] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex][label=above:$odd$] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex][label=above:$even$] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex][label=above:$odd$] {$4$};
+		\node (v5) at (6.0, 5.0) [Vertex][label=above:$even$] {$5$};
 		
 		\draw [-] (v1) to (v2) [NM];
 		\draw [-] (v2) to (v3) [MC];
 		\draw [-] (v3) to (v4) [NM];
 		\draw [-] (v4) to (v5) [MC];
+		
+		\draw (v3) -- (v4) -- (v5) [line width=10pt, green, opacity=0.3];
+	\end{tikzpicture}
+	\end{center}
+	}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Examples}
+	{\scriptsize
+	A graph $G=(V,E)$ and a matching $M$.
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][Exposed] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex] {$4$};
+		\node (v5) at (4.5, 3.5) [Vertex] {$5$};
+		\node (v6) at (3.0, 3.5) [Vertex] {$6$};
+		\node (v7) at (1.5, 3.5) [Vertex][Exposed] {$7$};
+		\node (v8) at (3.0, 2.0) [Vertex] {$8$};
+		\node (v9) at (4.5, 2.0) [Vertex] {$9$};
+		\node (v10) at (6.0, 3.5) [Vertex] {$10$};
+		
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v2) to (v7) [NM];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
+		\draw [-] (v5) to (v6) [NM];
 		\draw [-] (v5) to (v9) [NM];
+		\draw [-] (v5) to (v10) [NM];
+		\draw [-] (v6) to (v7) [NM];
+		\draw [-] (v6) to (v8) [MC];
+		\draw [-] (v8) to (v9) [NM];
+		\draw [-] (v9) to (v10) [MC];
+		
+		\draw (v5) -- (v10) -- (v9) [line width=10pt, green, opacity=0.3];
+	\end{tikzpicture}
+	\end{center}
+
+	Extend to a larger planted tree....
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][Exposed][label=above:$even$] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex][label=above:$odd$] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex][label=above:$even$] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex][label=above:$odd$] {$4$};
+		\node (v5) at (6.0, 5.0) [Vertex][label=above:$even$] {$5$};
+		\node (v10) at (7.5, 5.0) [Vertex][label=above:$odd$] {$10$};
+		\node (v9) at (8.0, 3.5) [Vertex][label=above:$even$] {$9$};
+		
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
 		\draw [-] (v5) to (v10) [NM];	
 		\draw [-] (v9) to (v10) [MC];
+		
+		\draw (v5) -- (v10) -- (v9) [line width=10pt, green, opacity=0.3];
+	\end{tikzpicture}
+	\end{center}
+	}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Examples}
+	{\scriptsize
+	A graph $G=(V,E)$ and a matching $M$.
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][Exposed] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex] {$4$};
+		\node (v5) at (4.5, 3.5) [Vertex] {$5$};
+		\node (v6) at (3.0, 3.5) [Vertex] {$6$};
+		\node (v7) at (1.5, 3.5) [Vertex][Exposed] {$7$};
+		\node (v8) at (3.0, 2.0) [Vertex] {$8$};
+		\node (v9) at (4.5, 2.0) [Vertex] {$9$};
+		\node (v10) at (6.0, 3.5) [Vertex] {$10$};
+		
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v2) to (v7) [NM];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
+		\draw [-] (v5) to (v6) [NM];
+		\draw [-] (v5) to (v9) [NM];
+		\draw [-] (v5) to (v10) [NM];
+		\draw [-] (v6) to (v7) [NM];
+		\draw [-] (v6) to (v8) [MC];
+		\draw [-] (v8) to (v9) [NM];
+		\draw [-] (v9) to (v10) [MC];
+		
+		\draw (v5) -- (v9) [line width=10pt, green, opacity=0.3];
+	\end{tikzpicture}
+	\end{center}
+
+	Encounter an edge connecting two even vertices. Find a blossom!
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][Exposed][label=above:$even$] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex][label=above:$odd$] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex][label=above:$even$] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex][label=above:$odd$] {$4$};
+		\node (v5) at (6.0, 5.0) [Vertex][label=above:$even$] {$5$};
+		\node (v10) at (7.5, 5.0) [Vertex][label=above:$odd$] {$10$};
+		\node (v9) at (8.0, 3.5) [Vertex][label=above:$even$] {$9$};
+		
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
+		\draw [-] (v5) to (v10) [NM];	
+		\draw [-] (v9) to (v10) [MC];
+		\draw [-] (v9) to (v5) [NM];
+		
+		\draw (v5) -- (v9) [line width=10pt, green, opacity=0.3];
 	\end{tikzpicture}
 	\end{center}
 	}
@@ -1869,7 +2201,129 @@
 	\frametitle{Examples}
 
 	{\scriptsize
-	Shrink 5,10,9 into a single macrovertex. 
+	A graph $G=(V,E)$ and a matching $M$.
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][Exposed] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex] {$4$};
+		\node (v5) at (4.5, 3.5) [Flower][label=below:\scriptsize{$(5,10,9)$}] {};
+				\pgfplothandlerlineto
+				\pgfplotfunction{\x}{0, 3, ..., 540}{
+					\pgfpointxy     
+					{-0.2 * cos(\x) * sin(5 / 3 * \x) + 4.5}
+					{-0.2 * sin(\x) * sin(5 / 3 * \x) + 3.5}
+				}
+				\pgfusepath{stroke}
+		\node (v6) at (3.0, 3.5) [Vertex] {$6$};
+		\node (v7) at (1.5, 3.5) [Vertex][Exposed] {$7$};
+		\node (v8) at (3.0, 2.0) [Vertex] {$8$};
+		
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v2) to (v7) [NM];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
+		\draw [-] (v5) to (v6) [NM];
+		\draw [-] (v6) to (v7) [NM];
+		\draw [-] (v6) to (v8) [MC];
+		\draw [-] (v8) to (v5) [NM];
+	\end{tikzpicture}
+	\end{center}
+	
+	Shrink (5,10,9) into a single macro vertex.
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][label=above:$even$][Exposed] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex][label=above:$odd$] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex][label=above:$even$] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex][label=above:$odd$] {$4$};
+		\node (v5) at (6.0, 5.0) [Flower][label=above:$even$][label=below:\scriptsize{$(5,10,9)$}] {};
+			%\myflower.apply(6.0, 5.0, 0.3)	
+				\pgfplothandlerlineto
+				\pgfplotfunction{\x}{0, 3, ..., 540}{
+					\pgfpointxy     
+					{-0.2 * cos(\x) * sin(5 / 3 * \x) + 6.0}
+					{-0.2 * sin(\x) * sin(5 / 3 * \x) + 5.0}
+				}
+				\pgfusepath{stroke}
+						
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
+	\end{tikzpicture}
+	\end{center}
+	}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Examples}
+
+	{\scriptsize
+	A graph $G=(V,E)$ and a matching $M$.
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][Exposed] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex] {$4$};
+		\node (v5) at (4.5, 3.5) [Flower][label=below:\scriptsize{$(5,10,9)$}] {};
+				\pgfplothandlerlineto
+				\pgfplotfunction{\x}{0, 3, ..., 540}{
+					\pgfpointxy     
+					{-0.2 * cos(\x) * sin(5 / 3 * \x) + 4.5}
+					{-0.2 * sin(\x) * sin(5 / 3 * \x) + 3.5}
+				}
+				\pgfusepath{stroke}
+		\node (v6) at (3.0, 3.5) [Vertex] {$6$};
+		\node (v7) at (1.5, 3.5) [Vertex][Exposed] {$7$};
+		\node (v8) at (3.0, 2.0) [Vertex] {$8$};
+		
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v2) to (v7) [NM];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
+		\draw [-] (v5) to (v6) [NM];
+		\draw [-] (v6) to (v7) [NM];
+		\draw [-] (v6) to (v8) [MC];
+		\draw [-] (v8) to (v5) [NM];
+		
+		\draw (v5) -- (v6) -- (v8) -- (v5) [line width=10pt, green, opacity=0.3];
+	\end{tikzpicture}
+	\end{center}
+	
 	Continue the search, and encounter the cycle (5,10,9)-6-8.
 	
 	\begin{center}
@@ -1882,11 +2336,11 @@
 		\tikzstyle{MC}		= [very thick, blue]
 		\tikzstyle{NM}		= [gray]
 		
-		\node (v1) at (0.0, 5.0) [Vertex][label=above:$o$][Exposed] {$1$};
-		\node (v2) at (1.5, 5.0) [Vertex][label=above:$i$] {$2$};
-		\node (v3) at (3.0, 5.0) [Vertex][label=above:$o$] {$3$};
-		\node (v4) at (4.5, 5.0) [Vertex][label=above:$i$] {$4$};
-		\node (v5) at (6.0, 5.0) [Flower][label=above:$o$][label=below:\scriptsize{$5,10,9$}] {};
+		\node (v1) at (0.0, 5.0) [Vertex][label=above:$even$][Exposed] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex][label=above:$odd$] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex][label=above:$even$] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex][label=above:$odd$] {$4$};
+		\node (v5) at (6.0, 5.0) [Flower][label=above:$even$][label=below:\scriptsize{$5,10,9$}] {};
 			%\myflower.apply(6.0, 5.0, 0.3)	
 				\pgfplothandlerlineto
 				\pgfplotfunction{\x}{0, 3, ..., 540}{
@@ -1895,21 +2349,30 @@
 					{-0.2 * sin(\x) * sin(5 / 3 * \x) + 5.0}
 				}
 				\pgfusepath{stroke}
-		\node (v6) at (7.5, 5.0) [Vertex][label=above:$i$] {$6$};
-		\node (v8) at (8.0, 3.5) [Vertex][label=above:$o$] {$8$};
+		\node (v6) at (7.5, 5.0) [Vertex][label=above:$odd$] {$6$};
+		\node (v8) at (8.0, 3.5) [Vertex][label=above:$even$] {$8$};
 		
 		\draw [-] (v1) to (v2) [NM];
 		\draw [-] (v2) to (v3) [MC];
 		\draw [-] (v3) to (v4) [NM];
 		\draw [-] (v4) to (v5) [MC];
 		\draw [-] (v5) to (v6) [NM];
-		\draw [-] (v5) to (v8) [NM];	
+		\draw [-] (v5) to (v8) [NM];
 		\draw [-] (v6) to (v8) [MC];
+		
+		\draw (v5) -- (v6) -- (v8) -- (v5) [line width=10pt, green, opacity=0.3];
 	\end{tikzpicture}
 	\end{center}
-	
-	Shrink (5,10,9),6,8 into a single macro vertex. 
-	Continue the serch, and encounter a exposed vertex 7.
+	}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Examples}
+
+	{\scriptsize
+	A graph $G=(V,E)$ and a matching $M$.
 	
 	\begin{center}
 	\begin{tikzpicture}
@@ -1921,11 +2384,133 @@
 		\tikzstyle{MC}		= [very thick, blue]
 		\tikzstyle{NM}		= [gray]
 		
-		\node (v1) at (0.0, 5.0) [Vertex][label=above:$o$][Exposed] {$1$};
-		\node (v2) at (1.5, 5.0) [Vertex][label=above:$i$] {$2$};
-		\node (v3) at (3.0, 5.0) [Vertex][label=above:$o$] {$3$};
-		\node (v4) at (4.5, 5.0) [Vertex][label=above:$i$] {$4$};
-		\node (v5) at (6.0, 5.0) [Flower][label=above:$o$][label=below:\scriptsize{$(5,10,9),6,8$}] {};
+		\node (v1) at (0.0, 5.0) [Vertex][Exposed] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex] {$4$};
+		\node (v5) at (4.5, 3.5) [Flower][label=below:\scriptsize{$(5,10,9),6,8$}] {};
+				\pgfplothandlerlineto
+				\pgfplotfunction{\x}{0, 3, ..., 540}{
+					\pgfpointxy     
+					{-0.2 * cos(\x) * sin(5 / 3 * \x) + 4.5}
+					{-0.2 * sin(\x) * sin(5 / 3 * \x) + 3.5}
+				}
+				\pgfusepath{stroke}
+		\node (v7) at (1.5, 3.5) [Vertex][Exposed] {$7$};
+		
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v2) to (v7) [NM];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
+		\draw [-] (v5) to (v7) [NM];
+		
+		\draw (v5) -- (v7) [line width=10pt, green, opacity=0.3];
+	\end{tikzpicture}
+	\end{center}
+	
+	Shrinke the blossom and encounter an exposed vertex 7.
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][label=above:$even$][Exposed] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex][label=above:$odd$] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex][label=above:$even$] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex][label=above:$odd$] {$4$};
+		\node (v5) at (6.0, 5.0) [Flower][label=above:$even$][label=below:\scriptsize{$(5,10,9),6,8$}] {};
+			%\myflower.apply(6.0, 5.0, 0.3)	
+				\pgfplothandlerlineto
+				\pgfplotfunction{\x}{0, 3, ..., 540}{
+					\pgfpointxy     
+					{-0.2 * cos(\x) * sin(5 / 3 * \x) + 6.0}
+					{-0.2 * sin(\x) * sin(5 / 3 * \x) + 5.0}
+				}
+				\pgfusepath{stroke}
+		\node (v7) at (7.5, 5.0) [Vertex][Exposed] {$7$};
+		
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
+		\draw [-] (v5) to (v7) [NM];
+		
+		\draw (v5) -- (v7) [line width=10pt, green, opacity=0.3];
+	\end{tikzpicture}
+	\end{center}
+	}
+}
+
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Examples}
+
+	{\scriptsize
+	A graph $G=(V,E)$ and a matching $M$.
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][Exposed] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex] {$4$};
+		\node (v5) at (4.5, 3.5) [Vertex] {$5$};
+		\node (v6) at (3.0, 3.5) [Vertex] {$6$};
+		\node (v7) at (1.5, 3.5) [Vertex][Exposed] {$7$};
+		\node (v8) at (3.0, 2.0) [Vertex] {$8$};
+		\node (v9) at (4.5, 2.0) [Vertex] {$9$};
+		\node (v10) at (6.0, 3.5) [Vertex] {$10$};
+		
+		\draw [-] (v1) to (v2) [NM];
+		\draw [-] (v2) to (v3) [MC];
+		\draw [-] (v2) to (v7) [NM];
+		\draw [-] (v3) to (v4) [NM];
+		\draw [-] (v4) to (v5) [MC];
+		\draw [-] (v5) to (v6) [NM];
+		\draw [-] (v5) to (v9) [NM];
+		\draw [-] (v5) to (v10) [NM];
+		\draw [-] (v6) to (v7) [NM];
+		\draw [-] (v6) to (v8) [MC];
+		\draw [-] (v8) to (v9) [NM];
+		\draw [-] (v9) to (v10) [MC];
+		
+		\draw (v1) -- (v2) -- (v3) -- (v4) -- (v5) -- (v10) -- (v9) -- (v8) -- (v6) -- (v7) [line width=10pt, red, opacity=0.3];
+	\end{tikzpicture}
+	\end{center}
+		
+	This is an augmenting tree and contains an augmenting path.
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
+		\tikzstyle{OUT}		= [fill = white]
+		\tikzstyle{IN}		= [fill = black]
+		\tikzstyle{Exposed}	= [dashed, OUT]
+		\tikzstyle{MC}		= [very thick, blue]
+		\tikzstyle{NM}		= [gray]
+		
+		\node (v1) at (0.0, 5.0) [Vertex][label=above:$even$][Exposed] {$1$};
+		\node (v2) at (1.5, 5.0) [Vertex][label=above:$odd$] {$2$};
+		\node (v3) at (3.0, 5.0) [Vertex][label=above:$even$] {$3$};
+		\node (v4) at (4.5, 5.0) [Vertex][label=above:$odd$] {$4$};
+		\node (v5) at (6.0, 5.0) [Flower][label=above:$even$][label=below:\scriptsize{$(5,10,9),6,8$}] {};
 			%\myflower.apply(6.0, 5.0, 0.3)	
 				\pgfplothandlerlineto
 				\pgfplotfunction{\x}{0, 3, ..., 540}{
@@ -1950,42 +2535,7 @@
 \frame{
 	\frametitle{Examples}
 
-	{\scriptsize
-	An augmenting path in the shrunken graph is found.
-	By unshrinking, we get the following augmenting path $P$ in the original graph.
-	
-	\begin{center}
-	\begin{tikzpicture}[scale=0.8]
-		\tikzstyle{Flower}	= [circle, fill=white, minimum size=6mm, inner sep=0pt]
-		\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=4mm, inner sep=0pt]
-		\tikzstyle{OUT}		= [fill = white]
-		\tikzstyle{IN}		= [fill = black]
-		\tikzstyle{Exposed}	= [dashed, OUT]
-		\tikzstyle{MC}		= [very thick, blue]
-		\tikzstyle{NM}		= [gray]
-		
-		\node (v1) at (0.0, 5.0) [Vertex][label=above:$o$][Exposed] {$1$};
-		\node (v2) at (1.5, 5.0) [Vertex][label=above:$i$] {$2$};
-		\node (v3) at (3.0, 5.0) [Vertex][label=above:$o$] {$3$};
-		\node (v4) at (4.5, 5.0) [Vertex][label=above:$i$] {$4$};
-		\node (v5) at (6.0, 5.0) [Vertex][label=above:$o$] {$5$};
-		\node (v10) at (7.5, 5.0) [Vertex][label=above:$i$] {$10$};
-		\node (v9) at (9.0, 5.0) [Vertex][label=above:$o$] {$9$};
-		\node (v8) at (10.5, 5.0) [Vertex][label=above:$i$] {$8$};
-		\node (v6) at (12.0, 5.0) [Vertex][label=above:$o$] {$6$};
-		\node (v7) at (13.5, 5.0) [Vertex][Exposed] {$7$};
-		
-		\draw [-] (v1) to (v2) [NM];
-		\draw [-] (v2) to (v3) [MC];
-		\draw [-] (v3) to (v4) [NM];
-		\draw [-] (v4) to (v5) [MC];
-		\draw [-] (v5) to (v10) [NM];
-		\draw [-] (v10) to (v9) [MC];
-		\draw [-] (v9) to (v8) [NM];
-		\draw [-] (v8) to (v6) [MC];
-		\draw [-] (v6) to (v7) [NM];
-	\end{tikzpicture}
-	\end{center}
+	{
 
 	Applying $M = M \oplus P$ yeilds following enlarged matching in the original graph.
 	
@@ -1999,13 +2549,13 @@
 		\tikzstyle{MC}		= [very thick, blue]
 		\tikzstyle{NM}		= [gray]
 		
-		\node (v1) at (0.0, 5.0) [Vertex][Exposed] {$1$};
+		\node (v1) at (0.0, 5.0) [Vertex] {$1$};
 		\node (v2) at (1.5, 5.0) [Vertex] {$2$};
 		\node (v3) at (3.0, 5.0) [Vertex] {$3$};
 		\node (v4) at (4.5, 5.0) [Vertex] {$4$};
 		\node (v5) at (4.5, 3.5) [Vertex] {$5$};
 		\node (v6) at (3.0, 3.5) [Vertex] {$6$};
-		\node (v7) at (1.5, 3.5) [Vertex][Exposed] {$7$};
+		\node (v7) at (1.5, 3.5) [Vertex] {$7$};
 		\node (v8) at (3.0, 2.0) [Vertex] {$8$};
 		\node (v9) at (4.5, 2.0) [Vertex] {$9$};
 		\node (v10) at (6.0, 3.5) [Vertex] {$10$};
@@ -2048,7 +2598,7 @@
 		$max_{x}(b,x) = min_{y}(c, y)$
 		\end{center}
 		
-		when such extrema exist.
+		if such extrema exist.
 	\end{block}
 	
 	\begin{block}{K\"{o}nig theorem}
