@@ -604,7 +604,7 @@
 %---------------------slide--------------------%
 \frame
 {
-	\frametitle{Question}
+	\frametitle{Intuition}
 	
 	\huge{
 	Then our algorithm can try to find augmenting paths to improve the known mathcing.
@@ -3041,8 +3041,34 @@
 \frame
 {
 	\frametitle{Edmonds' idea}
-	\uncover<1->{
-	He called the odd cycle \alert{blossom}.
+	
+	\uncover<1>{
+	An alternating path with an exposed vertex at one end and a matching edge at the other end is called \alert{stem}.
+	\begin{center}
+		\begin{tikzpicture}
+			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
+			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
+			\tikzstyle{OUT}		= [fill = white]
+			\tikzstyle{IN}		= [fill = black]
+			\tikzstyle{Exposed}	= [dashed, OUT]
+			\tikzstyle{MC}		= [very thick, red]
+			\tikzstyle{NM}		= [gray]
+			
+			\node (v0) at (0,1) [Vertex][OUT][Exposed] {}; 
+			\node (v1) at (1,1) [Vertex][IN] {};
+			\node (v2) at (2,1) [Vertex][OUT] {};
+			\node (v3) at (3,1) [Vertex][IN] {};
+			\node (v4) at (4,1) [Vertex][OUT] {};
+			
+			\draw [-] (v0) to (v1) [NM];
+			\draw [-] (v1) to (v2) [MC];
+			\draw [-] (v2) to (v3) [NM];
+			\draw [-] (v3) to (v4) [MC];
+		\end{tikzpicture}
+	\end{center}
+	}
+	\uncover<2>{
+	The odd cycle is called \alert{blossom}.
 	\begin{center}
 		\begin{tikzpicture}[scale=0.7]
 			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
@@ -3080,7 +3106,7 @@
 		\end{tikzpicture}
 	\end{center}}
 	
-	\uncover<1->{
+	\uncover<3>{
 	The alternating path from root plus the blossom is called \alert{flower}.
 	\begin{center}
 		\begin{tikzpicture}[scale=0.7]
@@ -3118,6 +3144,7 @@
 			\draw (v0) -- (v1) -- (v2) -- (v3) -- (v4) -- (v5) -- (v6) -- (v8) -- (v7) -- (v4)[line width=10pt, red, opacity=0.3];
 		\end{tikzpicture}
 	\end{center}}
+	
 }
 
 %---------------------slide--------------------%
@@ -3202,6 +3229,7 @@
 			\draw [-] (v4) to (5, 0) [NM];
 		\end{tikzpicture}
 	\end{center}}
+	
 }
 
 %---------------------slide--------------------%
@@ -4508,7 +4536,7 @@
 		\centering
 		\begin{minipage}[c]{.45\textwidth}
 		\centering
-		\begin{block}{Minimum set cover}
+		\begin{block}{Minimum vertex cover}
 		minimize
 		\begin{equation*}
 		x_{1} + x_{2} + x_{3} + x_{4}
