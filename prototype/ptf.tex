@@ -3256,7 +3256,7 @@
 	\begin{itemize}
 		\item Actually we do not need to contract the blossom. We can also put all the odd nodes in the blossom to the queue of the BFS. But mainting the alternating path to every vertex still needs some trick (We need to change the odd path to the odd node with the other even length path).
 		\item With some careful implementaion, Gabow[73] reduced the time complexity to $O(n^{3})$.
-		\item Currently the best time complexity is $O(n^{2.5})$ by Micali and Vazirani[80].
+		\item An $O(n^{2.5})$ time complexity can be achieved by finding many augmenting paths at one time, see Micali and Vazirani[80].
 	\end{itemize}
 	
 }
