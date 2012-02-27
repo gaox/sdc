@@ -205,45 +205,14 @@
 {
 	\frametitle{First try: greedy method}
 	
+	\begin{overlayarea}{\textwidth}{1cm}
+	\only<1>{
 	Enumerate every edge, if both end points are not covered by the matching, add the edge to the matching.
-	
-	\begin{center}
-		\begin{tikzpicture}
-			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
-			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
-			\tikzstyle{OUT}		= [fill = white]
-			\tikzstyle{IN}		= [fill = black]
-			\tikzstyle{Exposed}	= [dashed, blue, OUT]
-			\tikzstyle{MC}		= [line width=3pt, red]
-			\tikzstyle{NM}		= [very thick, black]
-			
-			\node (v0) at (0,0) [Vertex] {};
-			\node (v1) at (1,0) [Vertex] {};
-			\node (v2) at (0,1) [Vertex] {};
-			\node (v3) at (1,1) [Vertex] {};
-			\node (v4) at (2,0) [Vertex] {};
-			\node (v5) at (2,1) [Vertex] {};
-			
-			\draw [-] (v0) to (v2) [NM];
-			\draw [-] (v1) to (v3) [NM];
-			\draw [-] (v0) to (v3) [MC];
-			\draw [-] (v4) to (v5) [NM];
-			\draw [-] (v1) to (v5) [MC];
-			
-		\end{tikzpicture}
-	\end{center}
-	
-	Not always work. May reach local optimal (\alert{maximal} matching).
-}
-
-%---------------------slide--------------------%
-\frame
-{
-	\frametitle{Question}
-	
+	}
+	\only<2>{
 	\huge{How to improve the matching?}
-	
-	\bigskip
+	}
+	\end{overlayarea}
 	
 	\begin{center}
 		\begin{tikzpicture}
@@ -267,9 +236,15 @@
 			\draw [-] (v0) to (v3) [MC];
 			\draw [-] (v4) to (v5) [NM];
 			\draw [-] (v1) to (v5) [MC];
+			
 		\end{tikzpicture}
 	\end{center}
 	
+	\begin{overlayarea}{\textwidth}{1cm}
+	\only<1>{
+	Not always work. May reach local optimum (\alert{maximal} matching).
+	}
+	\end{overlayarea}
 }
 
 %---------------------slide--------------------%
@@ -277,9 +252,11 @@
 {
 	\frametitle{Augment the matching}
 	
+	\begin{overlayarea}{\textwidth}{1cm}
 	If we flip the edges...
+	\end{overlayarea}
 	
-	\bigskip
+	%\bigskip
 	
 	\begin{center}
 		\begin{tikzpicture}
@@ -307,6 +284,9 @@
 		\end{tikzpicture}
 	\end{center}
 	
+	\begin{overlayarea}{\textwidth}{1cm}
+ 
+ 	\end{overlayarea}
 }
 
 %---------------------slide--------------------%
@@ -314,9 +294,9 @@
 {
 	\frametitle{Augment the matching}
 	
-	Seems we find a way to improve the matching!
-	
-	\bigskip
+	\begin{overlayarea}{\textwidth}{1cm}
+	Seems we have found a way to improve the matching!
+	\end{overlayarea}
 	
 	\begin{center}
 		\begin{tikzpicture}
@@ -343,17 +323,21 @@
 		\end{tikzpicture}
 	\end{center}
 	
+	\begin{overlayarea}{\textwidth}{1cm}
 	Then we want to generalize the idea.
-	
+	\end{overlayarea}	
 }
 
 %---------------------slide--------------------%
 \frame
 {
 	\frametitle{Exposed vertex}
+	
+	\begin{overlayarea}{\textwidth}{1cm}
 	\begin{description}
 		\item[Exposed(free) vertex] is a vertex that is not incident with any edge in the matching $M$
 	\end{description}
+	\end{overlayarea}
 	
 	\begin{center}
 		\begin{tikzpicture}
@@ -383,16 +367,22 @@
 			\node at (4.5, 3) [Vertex][Exposed][label=right:exposed vertex] {};
 		\end{tikzpicture}
 	\end{center}
+	
+	\begin{overlayarea}{\textwidth}{1cm}
+	\end{overlayarea}
 }
 
 %---------------------slide--------------------%
 \frame
 {
 	\frametitle{Alternating path}
+	
+	\begin{overlayarea}{\textwidth}{1cm}
 	\begin{description}
 		\item[Alternating path] is a path whose edges are alternately in $M$ and $\overline{M}$
 	\end{description}
-	
+	\end{overlayarea}
+		
 	\begin{center}
 		\begin{tikzpicture}
 			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
@@ -416,18 +406,24 @@
 				\draw [-] (v\a\b) to (v\c\d) [MC][red];
 			
 			\node at (4.5, 3) [Vertex][Exposed][label=right:exposed vertex] {};
-			\draw (4,1) -- (5,1) [line width=10pt, blue, opacity=0.3] node [right, black, opacity=1]{alternating path};
+			\draw (3.75,2) -- (4.15,2) [line width=10pt, blue, opacity=0.3] node [right, black, opacity=1]{alternating path};
 		\end{tikzpicture}
 	\end{center}
+	
+	\begin{overlayarea}{\textwidth}{1cm}
+	\end{overlayarea}
 }
 
 %---------------------slide--------------------%
 \frame
 {
 	\frametitle{Augmenting path}
+	
+	\begin{overlayarea}{\textwidth}{1cm}
 	\begin{description}
 		\item[Augmenting path] is a simple alternating path between exposed vertices
 	\end{description}
+	\end{overlayarea}
 	
 	\begin{center}
 		\begin{tikzpicture}
@@ -452,9 +448,12 @@
 				\draw [-] (v\a\b) to (v\c\d) [MC][red];
 			
 			\node at (4.5, 3) [Vertex][Exposed][label=right:exposed vertex] {};
-			\draw (4,0) -- (5,0) [line width=10pt, green, opacity=0.3] node [right, black, opacity=1]{augmenting path};
+			\draw (3.75,2) -- (4.15,2) [line width=10pt, green, opacity=0.3] node [right, black, opacity=1]{augmenting path};
 		\end{tikzpicture}
 	\end{center}
+	
+	\begin{overlayarea}{\textwidth}{1cm}
+	\end{overlayarea}
 }
 
 %---------------------slide--------------------%
@@ -462,7 +461,12 @@
 {
 	\frametitle{Augmenting path}
 	
+	\begin{overlayarea}{\textwidth}{1cm}
+	\large{
 	We can find a larger matching in the augmenting path!
+	}
+	\end{overlayarea}
+	
 	\begin{center}
 		\begin{tikzpicture}
 			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
@@ -472,13 +476,11 @@
 			\tikzstyle{Exposed}	= [dashed, blue, OUT]
 			\tikzstyle{MC}		= [very thick, black]
 			\tikzstyle{NM}		= [gray]
-			
-			\draw (1,0) -- (0,0) -- (0,1) -- (0,2) -- (0,3) -- (1,3) [line width=10pt, green, opacity=0.3];
-			
+						
 			\draw (1.5, 3.5) node {$M$};
-			\foreach \x/\y in {0/0, 2/0, 3/0, 0/1, 1/1, 2/1, 3/1, 0/2, 2/2, 0/3, 2/3, 3/3}
+			\foreach \x/\y in {1/0, 1/3, 0/0, 2/0, 3/0, 0/1, 1/1, 2/1, 3/1, 0/2, 2/2, 0/3, 2/3, 3/3}
 				\node (v\x\y) at (\x, \y) [Vertex] {};
-			\foreach \x/\y in {1/0, 1/2, 3/2, 1/3}
+			\foreach \x/\y in {1/2, 3/2}
 				\node (v\x\y) at (\x, \y) [Vertex][Exposed] {};
 			\foreach \a/\b/\c/\d in {0/2/0/3, 0/0/0/1, 0/0/1/0, 0/2/1/2, 2/0/3/0, 2/1/3/1, 2/2/3/2, 2/2/2/3, 2/0/2/1, 3/0/3/1, 0/1/0/2, 1/1/2/2, 0/3/1/3, 2/3/3/3, 1/3/2/3, 3/1/3/2, 0/0/0/1, 0/2/0/3}
 				\draw [-] (v\a\b) to (v\c\d) [NM];
@@ -490,10 +492,12 @@
 			\draw (v03) -- (v13) [MC][blue];
 			
 			\node at (4.5, 3) [Vertex][Exposed][label=right:exposed vertex] {};
-			\draw (4,0) -- (5,0) [line width=10pt, green, opacity=0.3] node [right, black, opacity=1]{augmenting path};
 		\end{tikzpicture}
 	\end{center}
-	This operation is called symmetric difference $\oplus$.
+	
+	\begin{overlayarea}{\textwidth}{1cm}
+	This operation is called \alert{symmetric difference} $\oplus$.
+	\end{overlayarea}
 }
 
 %---------------------slide--------------------%
@@ -1003,16 +1007,23 @@
 {
 	\frametitle{Berge's theorem}
 	
+	
 	\large{
+	\uncover<1->{
 	Since the matching $M_{2}$ is larger, there must be a component has one more edge in $M_{2}$ than in $M_{1}$.	
+	}
 	
 	\bigskip
 	
+	\uncover<2->{
 	This component is an augmenting path.
-
+	}
+	
 	\bigskip
-		
+	
+	\uncover<3->{	
 	Why?
+	}
 	}
 	
 }
@@ -1150,11 +1161,11 @@
 	\frametitle{Algorithm}
 
 	\large{
-	How can we perform the search for an augmenting path \alert{efficiently}? By brute force, the search space could be exponential.
+	How can we perform the search for an augmenting path efficiently? By brute force, the search space could be \alert{exponential}.
 	
 	\bigskip
 	
-	And... what is an efficient algorithm?
+	And... what is an \alert{efficient} algorithm?
 	}
 }
 
@@ -1164,7 +1175,7 @@
 	\frametitle{Digression}
 
 	\large{
-	Edmonds defined that an efficient should has polynomial running time in this paper, which is earlier than Stephen Cook defined $P\&NP$.
+	Edmonds defined that an efficient algorithm should have polynomial running time in this paper, which is earlier than Stephen Cook defined $\mathcal{P}$ and  $\mathcal{NP}$.
 		
 	}
 }
@@ -1216,8 +1227,10 @@
 {
 	\frametitle{Find an augmenting path using BFS}
 	
+	\begin{overlayarea}{\textwidth}{1.5cm}
 	We can use some greedy heuristic to find an initial matching. Then we start from an exposed vertex to grow an alternating tree, since the augmenting path is an alternating path.
-	
+	\end{overlayarea}
+		
 	\begin{center}
 	\begin{tikzpicture}[scale=0.7]
 		\tikzstyle{Vertex} 	= [circle, draw, solid, fill=white, minimum size=3mm, inner sep=0pt]
@@ -1282,10 +1295,12 @@
 {
 	\frametitle{Find an augmenting path using BFS}
 	
+	\begin{overlayarea}{\textwidth}{1.5cm}
 	Case 1, $y$ is an exposed vertex not contained in $T$. 
 	
 	\alert{We found an augmenting path!}
-	
+	\end{overlayarea}
+		
 	\begin{center}
 	\begin{tikzpicture}[scale=0.7]
 		\tikzstyle{Vertex} 	= [circle, draw, solid, fill=white, minimum size=3mm, inner sep=0pt]
@@ -1353,8 +1368,10 @@
 {
 	\frametitle{Find an augmenting path using BFS}
 	
+	\begin{overlayarea}{\textwidth}{1.5cm}
 	Case 2, $y$ is matched vertex not in $T$, \alert{grow the tree}.
-	
+	\end{overlayarea}
+		
 	\begin{center}
 	\begin{tikzpicture}[scale=0.7]
 		\tikzstyle{Vertex} 	= [circle, draw, solid, fill=white, minimum size=3mm, inner sep=0pt]
@@ -1424,10 +1441,12 @@
 {
 	\frametitle{Find an augmenting path using BFS}
 	
+	\begin{overlayarea}{\textwidth}{1.5cm}
 	Case 3, $y$ is already contained in $T$ as an odd vertex. 
 	
 	\alert{Ignore it, no worry! Why?}
-	
+	\end{overlayarea}
+		
 	\begin{center}
 	\begin{tikzpicture}[scale=0.7]
 		\tikzstyle{Vertex} 	= [circle, draw, solid, fill=white, minimum size=3mm, inner sep=0pt]
@@ -1494,10 +1513,12 @@
 {
 	\frametitle{Find an augmenting path using BFS}
 	
+	\begin{overlayarea}{\textwidth}{1.5cm}
 	Case 4, $y$ is already contained in $T$ as an even vertex. 
 	
 	\alert{Can't ignore $y$, but it doesn't happen on a bipartite graph (no odd cycle)!}
-	
+	\end{overlayarea}
+		
 	\begin{center}
 	\begin{tikzpicture}[scale=0.7]
 		\tikzstyle{Vertex} 	= [circle, draw, solid, fill=white, minimum size=3mm, inner sep=0pt]
@@ -1694,15 +1715,22 @@
 \frame
 {
 	\frametitle{Summary}
-	The algorithm grow an alternating tree from an exposed vertex, if we find an exposed vertex, we can enlarge the matching and start from another exposed vertex growing the tree again. 
+	
+	\uncover<1->{
+	The algorithm grows an alternating tree from an exposed vertex, if we find an exposed vertex, we can enlarge the matching and start from another exposed vertex growing the tree again. 
+	}
 	
 	\bigskip
-	
+
+	\uncover<2->{	
 	After growing trees from all the exposed vertices, the algorithm terminates.
+	}
 	
 	\bigskip
-	
+
+	\uncover<3->{	
 	Time complexity $O(nm)$, $n$ is the number of vertices, $m$ is the number of edges.
+	}
 }
 
 %---------------------slide--------------------%
@@ -1716,9 +1744,12 @@
 \frame
 {
 	\frametitle{Examples of BFS failure on non-bipartite graphs}
+	\begin{overlayarea}{\textwidth}{1cm}
 	\begin{itemize}
 		\item Initial graph
 	\end{itemize}
+	\end{overlayarea}
+	
 	{\mode<presentation>{\tiny}
 	\begin{center}
 	\begin{tikzpicture}[scale=0.7]
@@ -1746,9 +1777,12 @@
 	\end{center}
 	}
 
+	\begin{overlayarea}{\textwidth}{1.5cm}
 	\begin{itemize}
 		\item Start from vertex 1, we add vertex 2 and 3.
 	\end{itemize}
+	\end{overlayarea}
+	
 	{\mode<presentation>{\tiny}
 	\begin{center}
 		\begin{tikzpicture}[scale=0.7]
@@ -1779,9 +1813,13 @@
 \frame
 {
 	\frametitle{Examples of BFS failure on non-bipartite graphs}
+	
+	\begin{overlayarea}{\textwidth}{1cm}
 	\begin{itemize}
 		\item Initial graph
 	\end{itemize}
+	\end{overlayarea}
+	
 	{\mode<presentation>{\tiny}
 	\begin{center}
 	\begin{tikzpicture}[scale=0.7]
@@ -1809,9 +1847,12 @@
 	\end{center}
 	}
 
+	\begin{overlayarea}{\textwidth}{1.5cm}
 	\begin{itemize}
 		\item Two vertices 4 and 5 could be visited. If we first visit 4...
 	\end{itemize}
+	\end{overlayarea}
+	
 	{\mode<presentation>{\tiny}
 	\begin{center}
 		\begin{tikzpicture}[scale=0.7]
@@ -1848,9 +1889,13 @@
 \frame
 {
 	\frametitle{Examples of BFS failure on non-bipartite graphs}
+	
+	\begin{overlayarea}{\textwidth}{1cm}
 	\begin{itemize}
 		\item Initial graph
 	\end{itemize}
+	\end{overlayarea}
+	
 	{\mode<presentation>{\tiny}
 	\begin{center}
 	\begin{tikzpicture}[scale=0.7]
@@ -1878,9 +1923,12 @@
 	\end{center}
 	}
 
+	\begin{overlayarea}{\textwidth}{1.5cm}
 	\begin{itemize}
 		\item From 5, we find 3 which is contained in $T$, if we ignore it, we will stop here.
 	\end{itemize}
+	\end{overlayarea}
+	
 	{\mode<presentation>{\tiny}
 	\begin{center}
 		\begin{tikzpicture}[scale=0.7]
@@ -1918,9 +1966,13 @@
 \frame
 {
 	\frametitle{Examples of BFS failure on non-bipartite graphs}
+	
+	\begin{overlayarea}{\textwidth}{1cm}
 	\begin{itemize}
 		\item Initial graph
 	\end{itemize}
+	\end{overlayarea}
+	
 	{\mode<presentation>{\tiny}
 	\begin{center}
 	\begin{tikzpicture}[scale=0.7]
@@ -1948,9 +2000,12 @@
 	\end{center}
 	}
 
+	\begin{overlayarea}{\textwidth}{1.5cm}
 	\begin{itemize}
 		\item But actually there is an augmenting path!
 	\end{itemize}
+	\end{overlayarea}
+	
 	{\mode<presentation>{\tiny}
 	\begin{center}
 		\begin{tikzpicture}[scale=0.7]
@@ -1959,13 +2014,20 @@
 			\tikzstyle{MC}		= [very thick, red]
 			\tikzstyle{NM}		= [gray]
 				
-			\node (v1) at (0.0, 5) [Vertex][Exposed] {$1$};
-			\node (v2) at (1.5, 5) [Vertex] {$2$};
-			\node (v3) at (3.0, 5) [Vertex] {$3$};
-			\node (v4) at (6.0, 5) [Vertex] {$4$};
-			\node (v5) at (4.5, 5) [Vertex] {$5$};
-			\node (v6) at (7.5, 5) [Vertex][Exposed] {$6$};
-				
+			\node (v1) at (0.0, 0) [Vertex][Exposed] {$1$};
+			\node (v2) at (1.5, 0) [Vertex] {$2$};
+			\node (v3) at (3.0, 0) [Vertex] {$3$};
+			\node (v4) at (6.0, 0) [Vertex] {$4$};
+			\node (v5) at (4.5, 0) [Vertex] {$5$};
+			\node (v6) at (7.5, 0) [Vertex][Exposed] {$6$};
+			
+			\fill[red, opacity = 0.2] (-0.3, 1) rectangle (0.3, -1);
+			\fill[blue, opacity = 0.2] (1.5-0.3, 1) rectangle (1.5+0.3, -1);
+			\fill[red, opacity = 0.2] (3-0.3, 1) rectangle (3+0.3, -1);
+			\fill[blue, opacity = 0.2] (4.5-0.3, 1) rectangle (4.5+0.3, -1);
+			\fill[red, opacity = 0.2] (6-0.3, 1) rectangle (6+0.3, -1);
+			\fill[blue, opacity = 0.2] (7.5-0.3, 1) rectangle (7.5+0.3, -1);
+			
 			\draw [-] (v1) to (v2) [NM];	
 			\draw [-] (v2) to (v3) [MC];
 			\draw [-] (v3) to (v5) [NM];
@@ -1980,9 +2042,13 @@
 \frame
 {
 	\frametitle{Examples of BFS failure on non-bipartite graphs}
+	
+	\begin{overlayarea}{\textwidth}{1cm}
 	\begin{itemize}
 		\item Initial graph
 	\end{itemize}
+	\end{overlayarea}
+	
 	{\mode<presentation>{\tiny}
 	\begin{center}
 	\begin{tikzpicture}[scale=0.7]
@@ -2010,9 +2076,12 @@
 	\end{center}
 	}
 
+	\begin{overlayarea}{\textwidth}{1.5cm}
 	\begin{itemize}
 		\item The problem is that 3 already been visited in even layer, and 5 is also in even layer. But the tree must alternate between different layers.
 	\end{itemize}
+	\end{overlayarea}
+	
 	{\mode<presentation>{\tiny}
 	\begin{center}
 		\begin{tikzpicture}[scale=0.7]
@@ -2050,9 +2119,13 @@
 \frame
 {
 	\frametitle{Examples of BFS failure on non-bipartite graphs}
+	
+	\begin{overlayarea}{\textwidth}{1cm}
 	\begin{itemize}
 		\item Initial graph
 	\end{itemize}
+	\end{overlayarea}
+	
 	{\mode<presentation>{\tiny}
 	\begin{center}
 	\begin{tikzpicture}[scale=0.7]
@@ -2079,9 +2152,12 @@
 	\end{center}
 	}
 
+	\begin{overlayarea}{\textwidth}{1.5cm}
 	\begin{itemize}
 		\item First idea: allow vertices to be visited both even and odd layers.
 	\end{itemize}
+	\end{overlayarea}
+	
 	{\mode<presentation>{\tiny}
 	\begin{center}
 		\begin{tikzpicture}[scale=0.7]
@@ -2124,9 +2200,13 @@
 \frame
 {
 	\frametitle{Examples of BFS failure on non-bipartite graphs}
+	
+	\begin{overlayarea}{\textwidth}{1cm}
 	\begin{itemize}
 		\item Initial graph
 	\end{itemize}
+	\end{overlayarea}
+	
 	{\mode<presentation>{\tiny}
 	\begin{center}
 	\begin{tikzpicture}[scale=0.7]
@@ -2152,9 +2232,12 @@
 	\end{center}
 	}
 
+	\begin{overlayarea}{\textwidth}{1.5cm}
 	\begin{itemize}
-		\item But the augmenting path we find may not be a simple path
+		\item But the augmenting path we find may not be a simple path.
 	\end{itemize}
+	\end{overlayarea}
+	
 	{\mode<presentation>{\tiny}
 	\begin{center}
 		\begin{tikzpicture}[scale=0.7]
@@ -2205,6 +2288,12 @@
 {
 	\frametitle{Examples of BFS failure on non-bipartite graphs}
 
+	\begin{overlayarea}{\textwidth}{1cm}
+	\begin{itemize}
+	\item Result graph
+	\end{itemize}
+	\end{overlayarea}
+	
 	{\mode<presentation>{\tiny}
 	\begin{center}
 	\begin{tikzpicture}[scale=0.7]
@@ -2230,9 +2319,11 @@
 	\end{center}
 	}
 
+	\begin{overlayarea}{\textwidth}{1.5cm}
 	\begin{itemize}
 		\item If we flip the edges...
 	\end{itemize}
+	\end{overlayarea}
 	
 	{\mode<presentation>{\tiny}
 	\begin{center}
@@ -2284,8 +2375,10 @@
 {
 	\frametitle{Review}
 	
+	\begin{overlayarea}{\textwidth}{2cm}
 	The frontier of the BFS consist of only even nodes, from where we extend the search tree.
-		
+	\end{overlayarea}
+	
 	\begin{center}
 	\begin{tikzpicture}[scale=0.7]
 		\tikzstyle{Vertex} 	= [circle, draw, solid, fill=white, minimum size=3mm, inner sep=0pt]
@@ -2349,10 +2442,13 @@
 \frame
 {
 	\frametitle{Review}
-		
+	
+	\begin{overlayarea}{\textwidth}{2cm}
 	For any node in the tree, there is a unique path from root to the node.
 	
 	For odd node, the path length is odd. For even node, the path lenght is even.
+	\end{overlayarea}
+	
 	\begin{center}
 	\begin{tikzpicture}[scale=0.7]
 		\tikzstyle{Vertex} 	= [circle, draw, solid, fill=white, minimum size=3mm, inner sep=0pt]
@@ -3151,8 +3247,12 @@
 \frame
 {
 	\frametitle{Edmonds' idea}
-	\uncover<1->{
+	
+	\begin{overlayarea}{\textwidth}{1.5cm}
 	Since all the nodes in the odd cycle can become even nodes, we shrink all the nodes to an even pseudo vertex, all edges connected to the nodes in the odd cycle now connect to the pseudo vertex.
+	\end{overlayarea}
+	
+	\begin{overlayarea}{\textwidth}{1.5cm}
 	\begin{center}
 		\begin{tikzpicture}[scale=0.7]
 			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
@@ -3188,17 +3288,24 @@
 			
 			
 		\end{tikzpicture}
-	\end{center}}
-	
-	\uncover<1->{
-	\begin{center}
-		\begin{tikzpicture}			
-			\draw [->] (0,1) to (0,0) [very thick] node [right, midway] {shrink};
-		\end{tikzpicture}
 	\end{center}
+	\end{overlayarea}
+}
 
+%---------------------slide--------------------%
+\frame
+{
+	\frametitle{Edmonds' idea}
+	
+	\begin{overlayarea}{\textwidth}{1.5cm}
+	Since all the nodes in the odd cycle can become even nodes, we shrink all the nodes to an even pseudo vertex, all edges connected to the nodes in the odd cycle now connect to the pseudo vertex.
+	\end{overlayarea}
+		
+	\transdissolve
+
+	\begin{overlayarea}{\textwidth}{1.5cm}
 	\begin{center}
-		\begin{tikzpicture}[scale=0.7]
+		\begin{tikzpicture}
 			\tikzstyle{Flower}	= [circle, fill=white, minimum size=4mm, inner sep=0pt]
 			\tikzstyle{Vertex} 	= [circle, draw, solid,  fill=white, minimum size=3mm, inner sep=0pt]
 			\tikzstyle{OUT}		= [fill = white]
@@ -3228,8 +3335,8 @@
 			\draw [-] (v4) to (5, 2) [NM];
 			\draw [-] (v4) to (5, 0) [NM];
 		\end{tikzpicture}
-	\end{center}}
-	
+	\end{center}
+	\end{overlayarea}
 }
 
 %---------------------slide--------------------%
@@ -3238,12 +3345,12 @@
 	\frametitle{Edmonds' idea}
 	
 	\begin{itemize}
-		\item Whenever a blossom $B$ is found, we shrink it to a pseudo vertex, and recursively run the algorithm to find maximum matching of the new graph $G/B$.
-		\item Edmonds proved that the maximum matching of $G$ is equal to the maximum matching of $G/B$ plus the maximum matching of $B$.
-		\item Since there are at most $n$ exposed vertices, we need $O(n)$ augmentations.
-		\item Each augmentation will shrink at most $O(n)$ blossoms.
-		\item Constructing the alternating tree takes at most $n^{2}$ if we use adjacency matrix.
-		\item $\therefore O(n^{4})$.
+		\item<1-> Whenever a blossom $B$ is found, we shrink it to a pseudo vertex, and recursively run the algorithm to find maximum matching of the new graph $G/B$.
+		\item<2-> Edmonds proved that the maximum matching of $G$ is equal to the maximum matching of $G/B$ plus the maximum matching of $B$.
+		\item<3-> Since there are at most $n$ exposed vertices, we need $O(n)$ augmentations.
+		\item<4-> Each augmentation will shrink at most $O(n)$ blossoms.
+		\item<5-> Constructing the alternating tree takes at most $n^{2}$ if we use adjacency matrix.
+		\item<6-> $\therefore O(n^{4})$.
 	\end{itemize}
 	
 }
@@ -3254,9 +3361,10 @@
 	\frametitle{Other implementations}
 	
 	\begin{itemize}
-		\item Actually we do not need to contract the blossom. We can also put all the odd nodes in the blossom to the queue of the BFS. But mainting the alternating path to every vertex still needs some trick (We need to change the odd path to the odd node with the other even length path).
-		\item With some careful implementaion, Gabow[73] reduced the time complexity to $O(n^{3})$.
-		\item An $O(n^{2.5})$ time complexity can be achieved by finding many augmenting paths at one time, see Micali and Vazirani[80].
+		\item<1-> Actually we do not need to contract the blossom. We can also put all the odd nodes in the blossom to the queue of the BFS. But mainting the alternating path to every vertex still needs some trick (We need to change the odd path to the odd node with the other even length path).
+		\item<2-> With some careful implementaion, Gabow[73] reduced the time complexity to $O(n^{3})$.
+		\item<3-> An $O(n^{2.5})$ time complexity can be achieved by finding many augmenting paths at one time, see Micali and Vazirani[80].
+		\item<4-> Currently the best known algorithm gives $O(n^{2.376})$ complexity, based on fast matrix multiplication.
 	\end{itemize}
 	
 }
@@ -4364,8 +4472,8 @@
 {
 	\frametitle{Summary}
 	\begin{itemize}
-		\item An efficient algorithm has been found.
-		\item The essence is to extend the search tree with odd nodes in the blossom. The other parts are the same with the algorithm on bipartite graph.
+		\item<1-> An efficient algorithm has been found.
+		\item<2-> The essence is to extend the search tree with odd nodes in the blossom. The other parts are the same with the algorithm on bipartite graph.
 	\end{itemize}
 }
 
@@ -5019,8 +5127,8 @@
 {
 	\frametitle{Summary}
 	\begin{itemize}
-		\item We have found the dual problem to maximum matching on general graphs!
-		\item Although maximum matching is an integer programming, which is inherently intractable, Edmonds proved in another paper that the optimal value of this integer programming is equal to the optimal value of the corresponding linear programming problem, if we relax the integral constraints. But it is beyond the scope of this talk.
+		\item<1-> We have found the dual problem to maximum matching on general graphs!
+		\item<2-> Although maximum matching is an integer programming problem, which is inherently intractable, Edmonds proved in another paper that the optimal value of this integer programming is equal to the optimal value of the corresponding linear programming problem, if we relax the integral constraints. But it is beyond the scope of this talk.
 	\end{itemize}
 }
 
@@ -5028,21 +5136,23 @@
 {
 	\frametitle{Conclusion}
 	\begin{itemize}
-		\item We have defined what an efficient algorithm is.
-		\item We have extended the algorithm for finding maximum matching on bipartite graph to the general graph, which has polynomial running time guarantee.
-		\item We have generalized K\"{o}nig theorem to general graph which is mathematically elegant.
+		\item<1-> We have defined what an efficient algorithm is.
+		\item<2-> We have extended the algorithm for finding maximum matching on bipartite graph to the general graph, which has polynomial running time guarantee.
+		\item<3-> We have generalized K\"{o}nig theorem to general graph which is mathematically elegant.
 	\end{itemize}
 }
 
-%---------------------slide--------------------%
-\frame
 {
-	\frametitle{ }
-	
-	\begin{center}
-	\huge{Thank you! \&\& Questions?}
-	\end{center}
-	
+\usebackgroundtemplate{\includegraphics[width=\paperwidth, height=\paperheight]{figures/flower}}
+\begin{frame}
+	\begin{textblock*}{\paperwidth}[0,0](0cm,3cm)
+		\begin{center}
+			\usebeamercolor[fg]{title}
+			\textbf{\huge {Thank you! \&\& Questions?}}
+		\end{center}
+		\usebeamercolor[fg]{normal text}
+	\end{textblock*}
+\end{frame}
 }
 
 %---------------------slide--------------------%
